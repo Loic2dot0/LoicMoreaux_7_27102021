@@ -2,8 +2,8 @@ const express = require('express');
 const sequelize = require('./config/sequelize');
 const User = require('./models/User');
 const UserLog = require('./models/UserLog');
-const Moderator = require('./models/moderator');
-
+const Moderator = require('./models/Moderator');
+const Post = require('./models/Post');
 
 sequelize.authenticate()
     .then(() => {
@@ -15,6 +15,9 @@ sequelize.authenticate()
             .catch((error)=> console.log(error));
         Moderator.sync()
             .then(()=>console.log('Moderator table created or updated!'))
+            .catch((error)=> console.log(error));
+        Post.sync()
+            .then(()=>console.log('Post table created or updated!'))
             .catch((error)=> console.log(error));     
         console.log('Successfull to access database');
     })
