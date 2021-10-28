@@ -1,7 +1,7 @@
 const sequelize = require('../config/sequelize');
 const { Sequelize, DataTypes } = require('sequelize');
 
-const Post = sequelize.define('User', {
+const Post = sequelize.define('Post', {
     id_post:{
         type: DataTypes.UUID,
         defaultValue: Sequelize.UUIDV4,
