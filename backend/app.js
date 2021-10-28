@@ -4,6 +4,7 @@ const User = require('./models/User');
 const UserLog = require('./models/UserLog');
 const Moderator = require('./models/Moderator');
 const Post = require('./models/Post');
+const PostModerate = require('./models/PostModerate');
 
 sequelize.authenticate()
     .then(() => {
@@ -18,7 +19,10 @@ sequelize.authenticate()
             .catch((error)=> console.log(error));
         Post.sync()
             .then(()=>console.log('Post table created or updated!'))
-            .catch((error)=> console.log(error));     
+            .catch((error)=> console.log(error));
+        PostModerate.sync()
+            .then(()=>console.log('Posts_moderate table created or updated!'))
+            .catch((error)=> console.log(error));       
         console.log('Successfull to access database');
     })
     .catch((error)=> console.log(`Failed to access database : ${error}`));
