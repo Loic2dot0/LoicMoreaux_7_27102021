@@ -1,36 +1,36 @@
 const express = require('express');
 const sequelize = require('./config/sequelize');
-const User = require('./models/User');
-const UserLog = require('./models/UserLog');
-const Moderator = require('./models/Moderator');
-const Post = require('./models/Post');
-const PostModerate = require('./models/PostModerate');
-const PostLike = require('./models/PostLike');
-const PostDislike = require('./models/PostDislike');
+const Models = require('./models/ExportModels');
 
 
 sequelize.authenticate()
     .then(() => {
-        User.sync()
-            .then(()=>console.log('User table synchronized!'))
+        Models.User.sync()
+            .then(()=>console.log('Users table synchronized!'))
             .catch((error)=> console.log(error));
-        UserLog.sync()
-            .then(()=>console.log('UserLog table synchronized!'))
+        Models.UserLog.sync()
+            .then(()=>console.log('Users_Log table synchronized!'))
             .catch((error)=> console.log(error));
-        Moderator.sync()
-            .then(()=>console.log('Moderator table synchronized!'))
+        Models.Moderator.sync()
+            .then(()=>console.log('Moderators table synchronized!'))
             .catch((error)=> console.log(error));
-        Post.sync()
-            .then(()=>console.log('Post table synchronized!'))
+        Models.Post.sync()
+            .then(()=>console.log('Posts table synchronized!'))
             .catch((error)=> console.log(error));
-        PostModerate.sync()
+        Models.PostModerate.sync()
             .then(()=>console.log('Posts_moderate table synchronized!'))
             .catch((error)=> console.log(error));
-        PostLike.sync()
+        Models.PostLike.sync()
             .then(()=>console.log('Posts_likes table synchronized!'))
             .catch((error)=> console.log(error));
-        PostDislike.sync()
+        Models.PostDislike.sync()
             .then(()=>console.log('Posts_dislikes table synchronized!'))
+            .catch((error)=> console.log(error));
+        Models.Comment.sync()
+            .then(()=>console.log('Comments table synchronized!'))
+            .catch((error)=> console.log(error));
+        Models.CommentModerate.sync()
+            .then(()=>console.log('Comments_moderate table synchronized!'))
             .catch((error)=> console.log(error));        
         console.log('Successfull to access database');
     })
