@@ -111,5 +111,10 @@ exports.modifyUser = (req, res, next) => {
 };
 
 exports.deleteUser = (req, res, next) => {
-
+    User.destroy({ 
+        where: {
+          id_user: req.params.id_user
+        }
+     }).then(()=> res.status(200).json({message : 'Compte utilisateur supprimé !'}))
+     .catch((error)=> res.status(500).json({error}));
 };
