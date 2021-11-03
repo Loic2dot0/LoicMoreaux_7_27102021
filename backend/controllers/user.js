@@ -94,7 +94,16 @@ exports.login = (req, res, next) => {
 };
 
 exports.getUser = (req, res, next) => {
-
+    User.findOne({
+        attributes: { 
+            exclude: ['email', 'password']
+        },
+        where: {
+            id_user: req.params.id_user
+        }
+    })
+    .then(user => res.status(200).json(user))
+    .catch(error => res.status(400).json({error}));
 };
 
 exports.modifyUser = (req, res, next) => {
