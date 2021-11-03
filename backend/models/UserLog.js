@@ -10,7 +10,7 @@ const UserLog = sequelize.define('UserLog', {
     },
     try: {
         type: DataTypes.INTEGER,
-        defaultValue: 0
+        defaultValue: 1
     }
 }, {
     tableName: 'users_log',
