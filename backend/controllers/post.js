@@ -44,7 +44,13 @@ exports.modifyPost = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next) => {
-
+    Post.destroy({ 
+            where: {
+                id_post: req.params.id_post
+            }
+        })
+        .then(()=> res.status(200).json({message : 'Publication supprimée !'}))
+        .catch((error)=> res.status(500).json({error}));
 };
 
 exports.likePost = (req, res, next) => {
