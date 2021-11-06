@@ -3,22 +3,22 @@ const Post = require('../models/User');
 
 exports.getAllPost = (req, res, next) => { //Retourne un tableau des posts dans l'ordre décroissant des dates de publication
     Post.findAll({
-        order: [
-            ['createAt', 'DESC']
-        ]
-    })
+            order: [
+                ['createAt', 'DESC']
+            ]
+        })
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(400).json({error}));
 };
 
 exports.getOnePost = (req, res, next) => {
     Post.findOne({
-        where: {
-            id_post: req.params.id_post
-        }
-    })
-    .then(post => res.status(200).json(post))
-    .catch(error => res.status(400).json({error}));
+            where: {
+                id_post: req.params.id_post
+            }
+        })
+        .then(post => res.status(200).json(post))
+        .catch(error => res.status(400).json({error}));
 };
 
 exports.createPost = (req, res, next) => {
@@ -32,7 +32,15 @@ exports.createPost = (req, res, next) => {
 };
 
 exports.modifyPost = (req, res, next) => {
-
+    Post.update({ 
+                title: req.body.title
+            }, {
+            where: {
+                id_post: req.params.id_post
+            }
+        })
+        .then(()=> res.status(200).json({message : 'Publication modifiée !'}))
+        .catch((error)=> res.status(500).json({error}));
 };
 
 exports.deletePost = (req, res, next) => {
