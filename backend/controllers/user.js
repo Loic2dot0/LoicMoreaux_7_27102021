@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
+const fs = require('fs');
 const User = require('../models/User');
 const UserLog = require('../models/UserLog');
 
@@ -107,7 +108,37 @@ exports.getUser = (req, res, next) => {
 };
 
 exports.modifyUser = (req, res, next) => {
+    if(req.file){ //si on reçois un fichier, on verifie l'existence d'un précédent et on le supprime
+        User.findByPk(req.params.id_user) 
+        .then(user => {
+            if(user.avatar){
+                const filename = user.avatar.split('/images/')[1];
+                fs.unlink(`images/avatars/${filename}`, () => {console.log('Fichier image supprimé')});
+            }
+        })
+        .catch(error => res.status(400).json({error}));
+    };
 
+    const user = req.file ? {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        service: req.body.service,
+        avatar: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } : {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        service: req.body.service
+    };
+
+    User.update( 
+            user
+        , {
+            where: {
+                id_user: req.params.id_user
+          }
+    })
+    .then(()=> res.status(200).json({message : 'Compte utilisateur modifié !'}))
+    .catch((error)=> res.status(500).json({error}));
 };
 
 exports.deleteUser = (req, res, next) => {
@@ -115,6 +146,7 @@ exports.deleteUser = (req, res, next) => {
         where: {
           id_user: req.params.id_user
         }
-     }).then(()=> res.status(200).json({message : 'Compte utilisateur supprimé !'}))
-     .catch((error)=> res.status(500).json({error}));
+    })
+    .then(()=> res.status(200).json({message : 'Compte utilisateur supprimé !'}))
+    .catch((error)=> res.status(500).json({error}));
 };
