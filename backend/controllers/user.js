@@ -10,11 +10,11 @@ exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash =>{
             User.create({
-                email: req.body.email,
-                password: hash,
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                service: req.body.service })
+                    email: req.body.email,
+                    password: hash,
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    service: req.body.service })
                 .then(()=> res.status(201).json({message: 'Utilisateur créé !'}))
                 .catch((error)=> res.status(500).json({error}));
         })
@@ -72,7 +72,7 @@ exports.login = (req, res, next) => {
                             if(trycount != 0){
                                 UserLog.destroy({ 
                                         where: {
-                                        email: req.body.email
+                                            email: req.body.email
                                         }
                                     })
                                     .then(()=> config.debug && console.log('suppresion de userlog'))
@@ -96,27 +96,27 @@ exports.login = (req, res, next) => {
 
 exports.getUser = (req, res, next) => {
     User.findOne({
-        attributes: { 
-            exclude: ['email', 'password']
-        },
-        where: {
-            id_user: req.params.id_user
-        }
-    })
-    .then(user => res.status(200).json(user))
-    .catch(error => res.status(400).json({error}));
+            attributes: { 
+                exclude: ['email', 'password']
+            },
+            where: {
+                id_user: req.params.id_user
+            }
+        })
+        .then(user => res.status(200).json(user))
+        .catch(error => res.status(400).json({error}));
 };
 
 exports.modifyUser = (req, res, next) => {
     if(req.file){ //si on reçois un fichier, on verifie l'existence d'un précédent et on le supprime
         User.findByPk(req.params.id_user) 
-        .then(user => {
-            if(user.avatar){
-                const filename = user.avatar.split('/images/')[1];
-                fs.unlink(`images/avatars/${filename}`, () => {console.log('Fichier image supprimé')});
-            }
-        })
-        .catch(error => res.status(400).json({error}));
+            .then(user => {
+                if(user.avatar){
+                    const filename = user.avatar.split('/images/')[1];
+                    fs.unlink(`images/avatars/${filename}`, () => {console.log('Fichier image supprimé')});
+                }
+            })
+            .catch(error => res.status(400).json({error}));
     };
 
     const user = req.file ? {
@@ -130,23 +130,22 @@ exports.modifyUser = (req, res, next) => {
         service: req.body.service
     };
 
-    User.update( 
-            user
-        , {
+    User.update(user,
+        {
             where: {
                 id_user: req.params.id_user
-          }
-    })
-    .then(()=> res.status(200).json({message : 'Compte utilisateur modifié !'}))
-    .catch((error)=> res.status(500).json({error}));
+            }
+        })
+        .then(()=> res.status(200).json({message : 'Compte utilisateur modifié !'}))
+        .catch((error)=> res.status(500).json({error}));
 };
 
 exports.deleteUser = (req, res, next) => {
     User.destroy({ 
-        where: {
-          id_user: req.params.id_user
-        }
-    })
-    .then(()=> res.status(200).json({message : 'Compte utilisateur supprimé !'}))
-    .catch((error)=> res.status(500).json({error}));
+            where: {
+            id_user: req.params.id_user
+            }
+        })
+        .then(()=> res.status(200).json({message : 'Compte utilisateur supprimé !'}))
+        .catch((error)=> res.status(500).json({error}));
 };
