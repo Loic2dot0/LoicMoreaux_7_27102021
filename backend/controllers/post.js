@@ -1,10 +1,12 @@
 const config = require('../config/config');
-const Post = require('../models/User');
+const Post = require('../models/Post');
+const PostLike = require('../models/PostLike');
+const PostDislike = require('../models/PostDislike');
 
 exports.getAllPost = (req, res, next) => { //Retourne un tableau des posts dans l'ordre décroissant des dates de publication
     Post.findAll({
             order: [
-                ['createAt', 'DESC']
+                ['createdAt', 'DESC']
             ]
         })
         .then(posts => res.status(200).json(posts))
@@ -54,7 +56,66 @@ exports.deletePost = (req, res, next) => {
 };
 
 exports.likePost = (req, res, next) => {
-
+    switch(req.body.like){
+        case 1:
+            PostLike.create({
+                    id_post : req.params.id_post,
+                    id_user: req.body.id_user
+                })
+                .then(()=> res.status(201).json({message: 'Like'}))
+                .catch((error)=> res.status(500).json({error}));
+            break;
+        case 0:
+            PostLike.findOne({
+                    where: {
+                        id_post: req.params.id_post,
+                        id_user: req.body.id_user
+                    }
+                })
+                .then(postlike => {
+                    if(postlike != null){
+                        PostLike.destroy({ 
+                                where: {
+                                    id_post: req.params.id_post,
+                                    id_user: req.body.id_user
+                                }
+                            })
+                            .then(config.debug && console.log('Unlike Like'))
+                            .catch((error)=> res.status(500).json({error}));
+                    }                     
+                })
+                .catch(error => res.status(500).json({error}));
+                
+            PostDislike.findOne({
+                    where: {
+                        id_post: req.params.id_post,
+                        id_user: req.body.id_user
+                    }
+                })
+                .then(postdislike => {
+                    if(postdislike != null){
+                        PostDislike.destroy({ 
+                                where: {
+                                    id_post: req.params.id_post,
+                                    id_user: req.body.id_user
+                                }
+                            })
+                            .then(config.debug && console.log('Unlike Dislike'))
+                            .catch((error)=> res.status(500).json({error}));
+                    }
+                })
+                .catch(error => res.status(500).json({error}));
+                res.status(201).json({message: 'Unlike'});
+            break;
+        case -1:
+            PostDislike.create({
+                    id_post : req.params.id_post,
+                    id_user: req.body.id_user
+                })
+                .then(()=> res.status(201).json({message: 'Dislike'}))
+                .catch((error)=> res.status(500).json({error}));
+            break;
+    };
 };
 
 exports.moderatePost = (req, res, next) => {
