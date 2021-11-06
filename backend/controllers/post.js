@@ -22,7 +22,13 @@ exports.getOnePost = (req, res, next) => {
 };
 
 exports.createPost = (req, res, next) => {
-
+    Post.create({
+            title: req.body.title,
+            image_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+            id_user: req.body.id_user
+        })
+        .then(()=> res.status(201).json({message: 'Publication créée !'}))
+        .catch((error)=> res.status(500).json({error}));
 };
 
 exports.modifyPost = (req, res, next) => {
