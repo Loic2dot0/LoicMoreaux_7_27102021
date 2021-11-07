@@ -2,6 +2,8 @@ const config = require('../config/config');
 const Post = require('../models/Post');
 const PostLike = require('../models/PostLike');
 const PostDislike = require('../models/PostDislike');
+const PostModerate = require('../models/PostModerate');
+
 
 exports.getAllPost = (req, res, next) => { //Retourne un tableau des posts dans l'ordre décroissant des dates de publication
     Post.findAll({
@@ -119,5 +121,19 @@ exports.likePost = (req, res, next) => {
 };
 
 exports.moderatePost = (req, res, next) => {
-
+    if(req.body.moderate){
+        PostModerate.create({
+                id_post : req.params.id_post
+            })
+            .then(()=> res.status(201).json({message: 'Post modéré !'}))
+            .catch((error)=> res.status(500).json({error}));
+    } else {
+        PostModerate.destroy({ 
+                where: {
+                    id_post: req.params.id_post
+                }
+            })
+            .then(()=> res.status(200).json({message : 'Modération du post supprimée !'}))
+            .catch((error)=> res.status(500).json({error}));
+    };
 };
