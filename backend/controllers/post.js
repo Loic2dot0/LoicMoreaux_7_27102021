@@ -3,14 +3,12 @@ const Post = require('../models/Post');
 const PostLike = require('../models/PostLike');
 const PostDislike = require('../models/PostDislike');
 const PostModerate = require('../models/PostModerate');
+const sequelize = require('../config/sequelize');
+const { QueryTypes } = require('../config/sequelize');
 
 
 exports.getAllPost = (req, res, next) => { //Retourne un tableau des posts dans l'ordre décroissant des dates de publication
-    Post.findAll({
-            order: [
-                ['createdAt', 'DESC']
-            ]
-        })
+    sequelize.query('SELECT * FROM posts WHERE NOT id_post = (SELECT id_post FROM posts_moderate) ORDER BY createdAt DESC', { type: QueryTypes.SELECT })
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(400).json({error}));
 };
