@@ -38,7 +38,13 @@ exports.modifyComment = (req, res, next) => {
 };
 
 exports.deleteComment = (req, res, next) => {
-
+    Comment.destroy({ 
+            where: {
+                id_comment: req.params.id_comment
+            }
+        })
+        .then(()=> res.status(200).json({message : 'Commentaire supprimé !'}))
+        .catch((error)=> res.status(500).json({error}));
 };
 
 exports.moderateComment = (req, res, next) => {
