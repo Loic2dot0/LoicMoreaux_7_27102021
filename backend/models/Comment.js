@@ -8,10 +8,6 @@ const Comment = sequelize.define('Comment', {
         primaryKey: true,
         unique: true
     },
-    id_post:{
-        type: DataTypes.UUID,
-        allowNull: false
-    },
     id_user:{
         type: DataTypes.UUID,
         allowNull: false
