@@ -48,5 +48,19 @@ exports.deleteComment = (req, res, next) => {
 };
 
 exports.moderateComment = (req, res, next) => {
-
+    if(req.body.moderate){
+        CommentModerate.create({
+            id_comment: req.params.id_comment
+            })
+            .then(()=> res.status(201).json({message: 'Commentaire modéré !'}))
+            .catch((error)=> res.status(500).json({error}));
+    } else {
+        CommentModerate.destroy({ 
+                where: {
+                    id_comment: req.params.id_comment
+                }
+            })
+            .then(()=> res.status(200).json({message : 'Modération du commentaire supprimée !'}))
+            .catch((error)=> res.status(500).json({error}));
+    };
 };
