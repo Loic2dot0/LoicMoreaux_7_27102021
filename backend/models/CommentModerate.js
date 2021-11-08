@@ -2,7 +2,7 @@ const sequelize = require('../config/sequelize');
 const { Sequelize, DataTypes } = require('sequelize');
 
 const CommentModerate = sequelize.define('CommentModerate', {
-    id_post:{
+    id_comment:{
         type: DataTypes.STRING(36),
         primaryKey: true,
         unique: true,
