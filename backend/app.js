@@ -1,6 +1,5 @@
 const express = require('express');
 const sequelize = require('./config/sequelize');
-const Models = require('./models/ExportModels');
 const path = require('path');
 
 const userRoutes = require('./routes/user');
