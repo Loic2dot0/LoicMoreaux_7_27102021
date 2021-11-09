@@ -7,7 +7,7 @@ const PostDislike = sequelize.define('PostDislike', {
         allowNull: false
     },
     id_user:{
-        type: DataTypes.STRING(36),
+        type: DataTypes.UUID,
         allowNull: false
     }
 }, {

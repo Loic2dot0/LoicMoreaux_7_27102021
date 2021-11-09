@@ -3,7 +3,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 const Moderator = sequelize.define('Moderator', {
     id_user:{
-        type: DataTypes.STRING(36),
+        type: DataTypes.UUID,
         primaryKey: true,
         unique: true,
         allowNull: false

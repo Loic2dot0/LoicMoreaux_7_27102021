@@ -49,7 +49,7 @@ Post.hasMany(PostDislike, {
 });
 Comment.belongsTo(PostDislike, { foreignKey: 'id_post' });
 
-Post.hasMany(PostModerate, {
+Post.hasOne(PostModerate, {
     foreignKey: 'id_post',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'

@@ -1,5 +1,10 @@
 const sequelize = require('../config/sequelize');
 const { Sequelize, DataTypes } = require('sequelize');
+const Post = require('./Post');
+const Comment = require('./Comment');
+const Moderator = require('./Moderator');
+const PostLike = require('./PostLike');
+const PostDislike = require('./PostDislike');
 
 const User = sequelize.define('User', {
     id_user:{
@@ -35,5 +40,40 @@ const User = sequelize.define('User', {
 }, {
 
 });
+
+User.hasMany(Post, {
+    foreignKey: 'id_user',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+Post.belongsTo(User, { foreignKey: 'id_user' });
+
+User.hasMany(PostLike, {
+    foreignKey: 'id_user',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+PostLike.belongsTo(User, { foreignKey: 'id_user' });
+
+User.hasMany(PostDislike, {
+    foreignKey: 'id_user',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+PostDislike.belongsTo(User, { foreignKey: 'id_user' });
+
+User.hasMany(Comment, {
+    foreignKey: 'id_user',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+Comment.belongsTo(User, { foreignKey: 'id_user' });
+
+User.hasMany(Moderator, {
+    foreignKey: 'id_user',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+Moderator.belongsTo(User, { foreignKey: 'id_user'});
 
 module.exports = User;

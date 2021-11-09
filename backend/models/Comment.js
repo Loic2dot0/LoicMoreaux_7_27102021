@@ -1,5 +1,6 @@
 const sequelize = require('../config/sequelize');
 const { Sequelize, DataTypes } = require('sequelize');
+const CommentModerate = require('./CommentModerate');
 
 const Comment = sequelize.define('Comment', {
     id_comment:{
@@ -23,5 +24,12 @@ const Comment = sequelize.define('Comment', {
 }, {
 
 });
+
+Comment.hasOne(CommentModerate, {
+    foreignKey: 'id_comment',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+});
+CommentModerate.belongsTo(Comment, { foreignKey: 'id_comment' });
 
 module.exports = Comment;
