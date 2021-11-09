@@ -3,7 +3,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 const PostLike = sequelize.define('PostLike', {
     id_post:{
-        type: DataTypes.STRING(36),
+        type: DataTypes.UUID,
         allowNull: false
     },
     id_user:{

@@ -3,7 +3,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 const PostModerate = sequelize.define('PostModerate', {
     id_post:{
-        type: DataTypes.STRING(36),
+        type: DataTypes.UUID,
         primaryKey: true,
         unique: true,
         allowNull: false
