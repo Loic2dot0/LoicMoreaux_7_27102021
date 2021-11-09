@@ -1,14 +1,29 @@
+const { Sequelize } = require('sequelize');
 const config = require('../config/config');
+const sequelize = require('../config/sequelize');
+const Op = Sequelize.Op;
+
 const Post = require('../models/Post');
 const PostLike = require('../models/PostLike');
 const PostDislike = require('../models/PostDislike');
 const PostModerate = require('../models/PostModerate');
-const sequelize = require('../config/sequelize');
-const { QueryTypes } = require('../config/sequelize');
+const User = require('../models/User');
+const Comment = require('../models/Comment');
 
 
 exports.getAllPost = (req, res, next) => { //Retourne un tableau des posts dans l'ordre décroissant des dates de publication
-    sequelize.query('SELECT * FROM posts WHERE id_post NOT IN (SELECT id_post FROM posts_moderate) ORDER BY createdAt DESC', { type: QueryTypes.SELECT })
+    Post.findAll({
+            where: {
+                id_post:{
+                    [Op.notIn] : sequelize.literal(`(SELECT id_post FROM posts_moderate)`)
+                }
+            },
+            include: [{
+                model : User,
+                attributes: ['firstname', 'lastname', 'service', 'avatar']
+            }],
+            order: [['createdAt' , 'DESC']]
+        })
         .then(posts => res.status(200).json(posts))
         .catch(error => res.status(400).json({error}));
 };
@@ -17,7 +32,8 @@ exports.getOnePost = (req, res, next) => {
     Post.findOne({
             where: {
                 id_post: req.params.id_post
-            }
+            },
+            include: [{model: User},{model: Comment}]
         })
         .then(post => res.status(200).json(post))
         .catch(error => res.status(400).json({error}));
