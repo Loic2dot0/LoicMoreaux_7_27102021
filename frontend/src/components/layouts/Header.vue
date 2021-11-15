@@ -2,8 +2,8 @@
     <header>
         <h1>Groupomania</h1>
         
-        <a href="index.html" class="header_a">
-            <img src="../assets/images/groupomamia_logo.png">
+        <a href="./" class="header_a">
+            <img src="../../assets/images/groupomamia_logo.png">
         </a>
     </header>
 </template>
