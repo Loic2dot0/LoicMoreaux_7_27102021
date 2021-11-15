@@ -1,17 +1,19 @@
 <template>
   <div id="app">
     <header-main></header-main>
-    
+    <footer-main></footer-main>
   </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
+import Header from './components/Header.vue';
+import Footer from './components/Footer.vue';
 
 export default {
   name: 'App',
   components: {
-    'header-main': Header
+    'header-main': Header,
+    'footer-main': Footer
     
   }
 }
@@ -34,5 +36,14 @@ export default {
 
   body *{
     box-sizing: border-box;
+  }
+
+  a{
+    text-decoration: none;
+    color: #fff;
+  }
+
+  a:hover{
+    text-decoration: underline;
   }
 </style>
