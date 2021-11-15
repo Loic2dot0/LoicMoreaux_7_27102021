@@ -49,6 +49,7 @@ export default {
     width: 80%;
     max-width: 1200px;
     margin: auto;
+    flex: 1;
 }
 
   a{
