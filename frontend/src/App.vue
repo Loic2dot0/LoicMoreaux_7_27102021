@@ -1,6 +1,11 @@
 <template>
   <div id="app">
     <header-main></header-main>
+    
+    <main>
+      <router-view></router-view>
+    </main>
+    
     <footer-main></footer-main>
   </div>
 </template>
@@ -13,8 +18,7 @@ export default {
   name: 'App',
   components: {
     'header-main': Header,
-    'footer-main': Footer
-    
+    'footer-main': Footer,
   }
 }
 </script>
@@ -28,15 +32,24 @@ export default {
     background-color: #000;
     margin: 0;
     color: #fff;
+  }
+
+  body *{
+    box-sizing: border-box;
+  }
+
+  #app{
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
 
-  body *{
-    box-sizing: border-box;
-  }
+  main{
+    width: 80%;
+    max-width: 1200px;
+    margin: auto;
+}
 
   a{
     text-decoration: none;
