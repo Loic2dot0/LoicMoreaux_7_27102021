@@ -34,8 +34,7 @@ export default {
     },
     components: {
         'login' : Login,
-        'signup' : Signup,
-        
+        'signup' : Signup        
     }
 }
 </script>

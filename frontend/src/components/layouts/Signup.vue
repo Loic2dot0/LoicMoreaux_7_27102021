@@ -9,11 +9,8 @@
         <label for="lastname">Nom</label>
         <input type="text" name="lastname">
         <label for="service">Service</label>
-        <select name="service">
-            <option value="Compta">Compta</option>
-            <option value="RH">Ressource humaine</option>
-            <option value="Commercial">Commercial</option>
-            <option value="Marketing">Marketing</option>
+        <select name="service" v-model="formData.service">
+            <option v-bind:key="index" v-for="(service, index) in formData.serviceList" >{{ service }}</option>
         </select>
         <input type="submit" value="Créer un compte" class="btnSubmit">
     </form>
@@ -21,7 +18,15 @@
 
 <script>
 export default {
-    name: 'Signup'
+    name: 'Signup',
+    data(){
+        return {
+            formData:{
+                service: '',
+                serviceList: ['Commercial', 'Marketting', 'Logistique', 'Ressource Humaine', 'Relation Client', ' Financier']
+            }   
+        }
+    }
     
 }
 </script>
