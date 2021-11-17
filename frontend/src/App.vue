@@ -60,4 +60,8 @@ export default {
   a:hover{
     text-decoration: underline;
   }
+
+  button{
+    cursor: pointer;
+  }
 </style>

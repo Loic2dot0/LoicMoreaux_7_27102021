@@ -95,6 +95,12 @@ export default {
         cursor: pointer;
     }
 
+    .btnSubmit:hover{
+        background-color: #000;
+        color: #ffd7d7 ;
+        transition: 400ms;
+    }
+
     span{
         color: #fd2d01;
         text-align:center;   
