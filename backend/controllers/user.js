@@ -123,7 +123,7 @@ exports.modifyUser = (req, res, next) => {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         service: req.body.service,
-        avatar: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        avatar: `${req.protocol}://${req.get('host')}/images/avatars/${req.file.filename}`
     } : {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
