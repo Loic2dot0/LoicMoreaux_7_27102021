@@ -1,15 +1,39 @@
 <template>
     <div>
-        <!-- Component profil -->
-        <!-- Component feed--> 
-        <section></section>
+        <profile></profile> 
+        <feed></feed>
     </div>
 </template>
 
 <script>
+import Profile from './layouts/Profile.vue';
+import Feed from './layouts/Feed.vue';
+
 export default {
-    name: 'Main-view'
+    name: 'Main-view',
+    data(){
+        return{
+
+        }
+    },
+    methods:{
+        
+    },
+    components: {
+        'profile' : Profile,
+        'feed' : Feed      
+    },
+    beforeCreate(){
+        if(!sessionStorage.userAuth){
+            document.location.href = './login';
+        }/*else{
+            const userId = JSON.parse(sessionStorage.userId);
+            const token = JSON.parse(sessionStorage.token);
+            console.log(`${userId} : ${token}`);
+        }*/
+    }
 }
+
 </script>
 
 <style scoped>
