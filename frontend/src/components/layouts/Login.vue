@@ -2,9 +2,9 @@
     <form v-on:submit="login">
         <span v-if="error.global">{{ error.global }}</span>
         <label for="email">E-mail : <span v-if="error.email">{{ error.email }}</span></label>
-        <input type="text" name="email" id="email" v-model="formData.email">
+        <input type="email" name="email" id="email" v-model="formData.email">
         <label for="password">Mot de passe : <span v-if="error.password">{{ error.password }}</span></label>
-        <input type="text" name="password" id="password" v-model="formData.password"> 
+        <input type="password" name="password" id="password" v-model="formData.password"> 
         <input type="submit" value="Se connecter" class="btnSubmit">
     </form>
 </template>
