@@ -9,7 +9,7 @@
             {{ user.service }}
         </p>
         <button>Mon profil</button>
-        <button>Se déconnecter</button>
+        <button v-on:click="unlog">Se déconnecter</button>
     </aside>
 </template>
 
@@ -26,6 +26,12 @@ export default {
                 service: null,
                 avatar: null
             }
+        }
+    },
+    methods:{
+        unlog: function(){
+            sessionStorage.clear();
+            document.location.href = './login';
         }
     },
     created(){
