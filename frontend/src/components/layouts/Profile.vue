@@ -1,14 +1,14 @@
 <template>
     <aside>
-        <button class="profile__btn">Publier</button>
-        <img src="../../assets/images/avatar.jpg" class="profile__avatar">
-        <p class="profile__text">
+        <button>Publier</button>
+        <img src="../../assets/images/avatar.jpg">
+        <p>
             {{ Prénom }}<br>
             {{ Nom }}<br>
             {{ Service }}
         </p>
-        <button class="profile__btn">Mon profil</button>
-        <button class="profile__btn">Se déconnecter</button>
+        <button>Mon profil</button>
+        <button>Se déconnecter</button>
     </aside>
 </template>
 
@@ -26,17 +26,36 @@ export default {
         flex-direction: column;
         padding: 15px 30px;
     }
-    .profile__avatar{
+
+    img{
         margin-top: 15px;
         border-radius: 10px;
     }
 
-    .profile__text{
+    p{
         font-size: 1.4rem;
     }
 
-    .profile__btn{
+    button{
         font-size: 1.4rem;
         line-height: 40px;
+        border: none;
+        border-radius: 20px;
+    }
+
+    button:hover{
+        background-color: #a3cfbb;
+        transition: 400ms;
+    }
+
+    button:last-child{
+        margin-top: 15px;
+        background-color: #f1aeb5;
+    }
+
+    button:last-child:hover {
+        color: #fff;
+        background-color: #842029;
+        transition: 400ms;
     }
 </style>
