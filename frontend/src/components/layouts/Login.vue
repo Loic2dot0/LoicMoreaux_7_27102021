@@ -73,8 +73,30 @@ export default {
 </script>
 
 <style scoped>
-  span{
-      color: #fd2d01;
-      text-align:center;   
-  }
+    form{
+        display: flex;
+        flex-direction: column;
+        line-height: 40px;
+        font-size: 1.2rem;
+        margin-top: 20px;
+    }
+
+    input, select{
+        height: 30px;
+        font-size: 1.2rem;
+        margin-bottom: 10px;    
+    }
+
+    .btnSubmit{
+        margin-top: 20px;
+        height: 40px;
+        background-color: #ffd7d7;
+        border: solid 1px #000;
+        cursor: pointer;
+    }
+
+    span{
+        color: #fd2d01;
+        text-align:center;   
+    }
 </style>
