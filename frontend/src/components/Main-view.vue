@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="session">
         <profile></profile> 
         <feed></feed>
     </div>
@@ -13,7 +13,7 @@ export default {
     name: 'Main-view',
     data(){
         return{
-
+            session: false
         }
     },
     methods:{
@@ -25,12 +25,8 @@ export default {
     },
     beforeCreate(){
         if(!sessionStorage.userAuth){
-            document.location.href = './login';
-        }/*else{
-            const userId = JSON.parse(sessionStorage.userId);
-            const token = JSON.parse(sessionStorage.token);
-            console.log(`${userId} : ${token}`);
-        }*/
+            document.location.href = '/login';
+        }else this.session = true;
     }
 }
 
