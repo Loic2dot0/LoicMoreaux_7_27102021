@@ -32,7 +32,7 @@ exports.login = (req, res, next) => {
             if(userlog != null){
                 if(userlog.try >= 3){
                     config.debug && console.log('Votre compte a été bloqué. Veuillez contacter un administrateur.');
-                    return res.status(401).json({message: 'Votre compte a été bloqué. Veuillez contacter un administrateur.'});
+                    return res.status(401).json({error: 'Votre compte a été bloqué. Veuillez contacter un administrateur.'});
                 }
                 else{
                     trycount = userlog.try;
@@ -46,7 +46,7 @@ exports.login = (req, res, next) => {
                 })
                 .then(user => {
                     if(user === null){
-                        return res.status(401).json({error: 'Utilisateur non trouvé !'});
+                        return res.status(401).json({error: 'Utilisateur ou mot de passe incorrect !'});
                     }
                     bcrypt.compare(req.body.password, user.password)
                         .then(valid => {
