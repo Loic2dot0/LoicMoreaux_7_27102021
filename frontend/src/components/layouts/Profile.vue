@@ -31,19 +31,29 @@ export default {
     methods:{
         unlog: function(){
             sessionStorage.clear();
-            document.location.href = './login';
+            document.location.href = '/login';
         }
     },
     created(){
         const userId = JSON.parse(sessionStorage.userAuth).userId;
-        //const token = JSON.parse(sessionStorage.token);
+        const token = JSON.parse(sessionStorage.userAuth).token;
 
-        axios.get(`http://localhost:3000/api/auth/profile/${userId}`)
+        axios.get(`http://localhost:3000/api/auth/profile/${userId}`,{
+                headers:{'authorization' : `Bearer ${token}`}
+            })
             .then(res =>{
                console.log(res.data);
                this.user = {...res.data};
             })
-            .catch(error=> console.log(error));
+            .catch(error=> {
+                console.log(error.response.status);
+                if(error.response.status > 400){
+                    console.log('Vous n\'êtes pas authoriser a acceder a ce contenu');
+                    document.location.href = `/error/${error.response.status}`;
+                }
+            });
+
+            
     }    
 }
 </script>
