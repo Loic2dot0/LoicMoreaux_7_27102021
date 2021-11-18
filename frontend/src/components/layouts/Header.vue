@@ -2,7 +2,7 @@
     <header>
         <h1>Groupomania</h1>
         
-        <a href="./" class="header_a">
+        <a href="/" class="header_a">
             <img src="../../assets/images/groupomamia_logo.png">
         </a>
     </header>
