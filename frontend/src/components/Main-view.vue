@@ -35,8 +35,16 @@ export default {
 <style scoped>
     div{
         display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: start;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    @media screen and (min-width: 1024px) {
+        div{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: start;
+        }
     }
 </style>

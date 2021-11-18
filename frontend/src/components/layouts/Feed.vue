@@ -12,7 +12,8 @@ export default {
 
 <style scoped>
     section{
-        width: 67%;
+        width: 95%;
+        margin-top: 20px
     }
 
     article{
@@ -22,49 +23,56 @@ export default {
         padding: 5px;
     }
 
-    .article__header{
-        display: flex;
-        align-items: center;
-    }
+    @media screen and (min-width: 1024px) {
+        section{
+            width: 67%;
+            margin-top: 0px
+        }
 
-    .article__avatar{
-        width: 40px;
-        height: 40px;
-    }
+        .article__header{
+            display: flex;
+            align-items: center;
+        }
 
-    .article__date{
-        flex: 1;
-        text-align: right;
-    }
+        .article__avatar{
+            width: 40px;
+            height: 40px;
+        }
 
-    .article__title{
-        margin-top: 0; 
-    }
+        .article__date{
+            flex: 1;
+            text-align: right;
+        }
 
-    .article__img{
-        text-align: center;
-    }
+        .article__title{
+            margin-top: 0; 
+        }
 
-    .article__img img{
-        max-height: 350px;
-        margin: auto;
-    }
+        .article__img{
+            text-align: center;
+        }
 
-    .article__footer button{
-        line-height: 30px;
-        font-size: 1rem;
+        .article__img img{
+            max-height: 350px;
+            margin: auto;
+        }
 
-    }
+        .article__footer button{
+            line-height: 30px;
+            font-size: 1rem;
 
-    .btn-rate{
-        width: 70px;
-    }
+        }
 
-    .btn-rate--top{
-        background-color: #a3ebc5;
-    }
+        .btn-rate{
+            width: 70px;
+        }
 
-    .btn-rate--flop{
-        background-color: #ef6262;
+        .btn-rate--top{
+            background-color: #a3ebc5;
+        }
+
+        .btn-rate--flop{
+            background-color: #ef6262;
+        }
     }
 </style>

@@ -1,15 +1,15 @@
 <template>
     <aside>
-        <button>Publier</button>
-        <img v-if="user.avatar" v-bind:src="user.avatar">
-        <img v-else src="../../assets/images/avatar.jpg">
+        <button class="btn-publish">Publier</button>
+        <img v-if="user.avatar" v-bind:src="user.avatar" v-on:click="modify" class="avatar" alt="avatar de l'utilisateur">
+        <img v-else src="../../assets/images/avatar.jpg" v-on:click="modify" class="avatar" alt="avatar de l'utilisateur">
         <p>
             {{ user.firstname }}<br>
             {{ user.lastname }}<br>
             {{ user.service }}
         </p>
-        <button>Mon profil</button>
-        <button v-on:click="unlog">Se déconnecter</button>
+        <button v-on:click="modify" class="btn-profile">Mon profil</button>
+        <button v-on:click="unlog" class="btn-unlog"><img src="../../assets/images/power-off-solid.svg" alt=""><span>Se déconnecter</span></button>
     </aside>
 </template>
 
@@ -32,6 +32,9 @@ export default {
         unlog: function(){
             sessionStorage.clear();
             document.location.href = '/login';
+        },
+        modify: function(){
+
         }
     },
     created(){
@@ -60,27 +63,38 @@ export default {
 
 <style scoped>
     aside{
-        width: 25%;
+        width: 95%;
+        padding: 5px;
         background-color: #333;
-        display: flex;
-        flex-direction: column;
-        padding: 15px 30px;
-    }
-
-    img{
-        margin-top: 15px;
-        border-radius: 10px;
-    }
-
-    p{
         font-size: 1.4rem;
+        display: flex;
+        justify-content: space-between;        
+    }
+
+    .avatar{
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        object-position: 50% 50%;
+        overflow: hidden;
+        order: 1;
+        border-radius: 5px;
+    }
+
+    p, .btn-profile, .btn-unlog span{
+       display: none;
+    }
+
+    .btn-publish{
+        order: 2;
+        padding: 0 20px;
     }
 
     button{
-        font-size: 1.4rem;
-        line-height: 40px;
+        font-size: 1.2rem;
+        height: 40px;
         border: none;
-        border-radius: 20px;
+        border-radius: 5px;
     }
 
     button:hover{
@@ -88,14 +102,64 @@ export default {
         transition: 400ms;
     }
 
-    button:last-child{
-        margin-top: 15px;
+    .btn-unlog{
+        width: 40px;
+        height: 40px;
+        padding: 0;
         background-color: #f1aeb5;
+        order: 3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    button:last-child:hover {
+    .btn-unlog img{
+        width: 30px;
+        height: 30px;
+    }
+
+    .btn-unlog:hover {
         color: #fff;
         background-color: #842029;
         transition: 400ms;
+    }
+
+    @media screen and (min-width: 1024px) {
+        aside{
+            width: 25%;
+            padding: 10px;
+            flex-direction: column;            
+        }
+
+        .avatar{
+            width: 100%;
+            height: 100%;
+            margin-top: 15px;
+            order: initial;
+        }
+
+        p, .btn-profile, .btn-unlog span{
+            display:initial;
+        }
+
+        button{
+            font-size: 1.4rem;
+        }
+
+        .btn-publish{
+            order: initial;
+        }
+
+        .btn-unlog{
+            width: 100%;
+            margin-top: 15px;
+            background-color: #f1aeb5;
+            order: initial;
+            display: initial;
+        }
+
+        .btn-unlog img{
+            display: none;
+        }
     }
 </style>

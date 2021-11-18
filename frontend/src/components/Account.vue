@@ -60,7 +60,7 @@ export default {
         font-size: 1.2rem;
         text-align: center;
         background-color: #202020;
-        border-radius: 30px 30px 0 0;
+        border-radius: 5px 5px 0 0;
         cursor: pointer;
     }
 
@@ -72,7 +72,6 @@ export default {
         width : 90%;
         margin: auto;
         padding-bottom: 20px;
-        border-radius: 30px;
     }
 
     @media screen and (min-width: 1024px) {

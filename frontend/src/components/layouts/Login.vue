@@ -91,7 +91,8 @@ export default {
         margin-top: 20px;
         height: 40px;
         background-color: #ffd7d7;
-        border: solid 1px #000;
+        border: none;
+        border-radius: 5px;
         cursor: pointer;
     }
 
