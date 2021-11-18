@@ -23,7 +23,7 @@ export default {
         'profile' : Profile,
         'feed' : Feed      
     },
-    beforeCreate(){
+    created(){
         if(!sessionStorage.userAuth){
             document.location.href = '/login';
         }else this.session = true;
