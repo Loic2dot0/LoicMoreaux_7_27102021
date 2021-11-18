@@ -41,7 +41,7 @@ export default {
 
 <style scoped>
     section{
-        width: 70%;
+        width: 95%;
         margin: auto;
         margin-top: 30px;
         background-color: #333;
@@ -57,7 +57,7 @@ export default {
         display: block;
         width: 49.5%;
         line-height: 40px;
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         text-align: center;
         background-color: #202020;
         border-radius: 30px 30px 0 0;
@@ -73,5 +73,11 @@ export default {
         margin: auto;
         padding-bottom: 20px;
         border-radius: 30px;
+    }
+
+    @media screen and (min-width: 1024px) {
+        section{
+            width: 70%;
+        }
     }
 </style>
