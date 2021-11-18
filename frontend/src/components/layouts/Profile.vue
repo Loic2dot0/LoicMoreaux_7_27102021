@@ -34,7 +34,7 @@ export default {
             document.location.href = '/login';
         },
         modify: function(){
-
+            return true;
         }
     },
     created(){
@@ -45,18 +45,13 @@ export default {
                 headers:{'authorization' : `Bearer ${token}`}
             })
             .then(res =>{
-               console.log(res.data);
                this.user = {...res.data};
             })
             .catch(error=> {
-                console.log(error.response.status);
                 if(error.response.status > 400){
-                    console.log('Vous n\'êtes pas authoriser a acceder a ce contenu');
                     document.location.href = `/error/${error.response.status}`;
                 }
-            });
-
-            
+            });    
     }    
 }
 </script>
