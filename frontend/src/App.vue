@@ -46,22 +46,28 @@ export default {
   }
 
   main{
-    width: 80%;
-    max-width: 1200px;
+    width: 100%;
     margin: auto;
     flex: 1;
-}
+  }
 
   a{
     text-decoration: none;
     color: #fff;
   }
 
-  a:hover{
+  a:hover, a:focus{
     text-decoration: underline;
   }
 
   button{
     cursor: pointer;
+  }
+
+  @media screen and (min-width: 1024px) {
+    main{
+      width: 80%;
+      max-width: 1200px;
+    }
   }
 </style>

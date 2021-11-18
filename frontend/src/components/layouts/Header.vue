@@ -27,16 +27,26 @@ export default {
 
     a{
         display: block;
-        width: 80%;
-        max-width: 1200px;
+        width: 90%;
         margin: auto;
         text-align:  center;
         border-bottom: solid 3px #ffd7d7;
     }
 
     img{
-        width:70%;
-        max-width: 800px;
+        width:90%;
         padding: 10px;
+    }
+
+    @media screen and (min-width: 780px) {
+        a{
+            width: 80%;
+            max-width: 1200px;
+        }
+
+        img{
+            width:70%;
+            max-width: 800px;
+        }
     }
 </style>
