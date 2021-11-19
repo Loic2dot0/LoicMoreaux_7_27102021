@@ -1,12 +1,12 @@
 <template>
     <section>
         <article>
-            <div class="article__header">
-                <img v-if="post.User.avatar" v-bind:src="post.User.avatar" class="article__avatar" alt="avatar de l'utilisateur">
-                <img v-else src="../../assets/images/avatar.jpg" class="article__avatar" alt="avatar de l'utilisateur">
-                <div class="article__text">
-                    <p>{{ post.User.firstname }} {{ post.User.lastname }} <i>{{ post.User.service }}</i></p>
-                    <p class="article__date">{{ formatDate(post.createdAt, post.updatedAt) }}</p>
+            <div class="author">
+                <img v-if="user.avatar" v-bind:src="user.avatar" class="author__avatar" alt="avatar de l'utilisateur">
+                <img v-else src="../../assets/images/avatar.jpg" class="author__avatar" alt="avatar de l'utilisateur">
+                <div class="author__text">
+                    <p>{{ user.firstname }} {{ user.lastname }} <i>{{ user.service }}</i></p>
+                    <p class="author__date">{{ formatDate(post.createdAt, post.updatedAt) }}</p>
                 </div>
             </div>
             <h2 class="article__title">{{ post.title }}</h2>
@@ -22,7 +22,9 @@
             </div>  
         </article>
 
-        <allcomments v-bind:comments="post.Comments"></allcomments>
+        <router-link v-bind:to="`/`">Retour au feed</router-link>
+
+        <allcomments v-bind:id_post="id_post"></allcomments>
     </section>
 </template>
 
@@ -35,7 +37,8 @@ export default {
     data(){
         return{
             id_post: this.$route.params.id_post,
-            post: {}
+            post: {},
+            user: {}
         }
     },
     methods:{
@@ -60,6 +63,7 @@ export default {
             })
             .then(res =>{
                this.post = res.data;
+               this.user = this.post.User;
             })
             .catch(error=> {
                if(error.response.status > 400){
@@ -71,111 +75,5 @@ export default {
 </script>
 
 <style scoped>
-    section{
-        width: 95%;
-        margin-top: 20px
-    }
-
-    article{
-        width: 100%;
-        background-color: #333;
-        margin-bottom: 15px;
-        padding: 5px;
-    }
-
-    .article__header{
-        display: flex;
-    }
-
-    .article__avatar{
-        width: 40px;
-        height: 40px;
-        border-radius: 5px;
-    }
-
-    .article__text{
-        margin-left: 5px;
-        flex: 1;
-        font-size: 1.2rem;
-    }
-
-    .article__text p{
-        margin: 0;
-    }
     
-    .article__date{
-        font-size: 1rem
-    }
-
-    .article__title{
-        margin: 0; 
-    }
-
-    .article__img{
-        text-align: center;
-        margin-top: 5px;
-    }
-
-    .article__img img{
-        max-width: 100%;
-        max-height: 350px;
-        margin: auto;
-    }
-
-    .article__footer{
-        display: flex;
-        justify-content: space-between;
-        margin-top: 5px;
-    }
-
-    .article__footer button{
-        line-height: 20px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 5px;
-        width: 32%;
-    }
-
-    .btn-rate--top{
-        background-color: #a3ebc5;
-    }
-
-    .btn-rate--top:hover{
-        background-color: #16d198;
-        color: #fff;
-        transition: 400ms;
-    }
-
-    .btn-rate--flop{
-        background-color: #ef6262;
-    }
-
-    .btn-rate--flop:hover{
-        background-color: #ef4558;
-        color: #fff;
-        transition: 400ms;
-    }
-
-    .btn-comment:hover{
-        background-color: #000;
-        color: #fff;
-        transition: 400ms;
-    }
-
-    @media screen and (min-width: 1024px) {
-        section{
-            width: 67%;
-            margin-top: 0px
-        }
-
-        .article__text{
-            font-size: 1.4rem;
-        }
-        
-        .article__footer button{
-            width: 30%;
-            line-height: 25px;
-            font-size: 1.2rem;
-        }
-    }
 </style>

@@ -1,12 +1,12 @@
 <template>
     <section>
         <article v-bind:key="index" v-for="(post, index) in posts">
-            <div class="article__header">
-                <img v-if="post.User.avatar" v-bind:src="post.User.avatar" class="article__avatar" alt="avatar de l'utilisateur">
-                <img v-else src="../../assets/images/avatar.jpg" class="article__avatar" alt="avatar de l'utilisateur">
-                <div class="article__text">
+            <div class="author">
+                <img v-if="post.User.avatar" v-bind:src="post.User.avatar" class="author__avatar" alt="avatar de l'utilisateur">
+                <img v-else src="../../assets/images/avatar.jpg" class="author__avatar" alt="avatar de l'utilisateur">
+                <div class="author__text">
                     <p>{{ post.User.firstname }} {{ post.User.lastname }} <i>{{ post.User.service }}</i></p>
-                    <p class="article__date">{{ formatDate(post.createdAt, post.updatedAt) }}</p>
+                    <p class="author__date">{{ formatDate(post.createdAt, post.updatedAt) }}</p>
                 </div>
             </div>
             <h2 class="article__title">{{ post.title }}</h2>
@@ -47,7 +47,6 @@ export default {
         }
     },
     created(){
-        //const userId = JSON.parse(sessionStorage.userAuth).userId;
         const token = JSON.parse(sessionStorage.userAuth).token;
 
         axios.get(`http://localhost:3000/api/posts`,{
@@ -65,7 +64,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
     section{
         width: 95%;
         margin-top: 20px
@@ -78,27 +77,30 @@ export default {
         padding: 5px;
     }
 
-    .article__header{
+    .author{
         display: flex;
     }
 
-    .article__avatar{
+    .author__avatar{
         width: 40px;
         height: 40px;
+        object-fit: cover;
+        object-position: 50% 50%;
+        overflow: hidden;
         border-radius: 5px;
     }
 
-    .article__text{
+    .author__text{
         margin-left: 5px;
         flex: 1;
         font-size: 1.2rem;
     }
 
-    .article__text p{
+    .author__text p{
         margin: 0;
     }
     
-    .article__date{
+    .author__date{
         font-size: 1rem
     }
 
@@ -162,11 +164,11 @@ export default {
             width: 67%;
             margin-top: 0px
         }
-
-        .article__text{
+        
+        .author__text{
             font-size: 1.4rem;
         }
-        
+
         .article__footer button{
             width: 30%;
             line-height: 25px;
