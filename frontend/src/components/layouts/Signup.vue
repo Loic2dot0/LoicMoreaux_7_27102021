@@ -1,14 +1,15 @@
 <template>
-    <form>
-        <label for="mail">E-mail</label>
-        <input type="text" name="mail">
-        <label for="password">Mot de passe</label>
-        <input type="text" name="password">
-        <label for="firstname">Prénom</label>
-        <input type="text" name="firstname">
-        <label for="lastname">Nom</label>
-        <input type="text" name="lastname">
-        <label for="service">Service</label>
+    <form v-on:submit="signup">
+        <span v-if="error.global">{{ error.global }}</span>
+        <label for="email">E-mail : <span v-if="error.email">{{ error.email }}</span></label>
+        <input type="email" name="email" v-model="formData.email">
+        <label for="password">Mot de passe : <span v-if="error.password">{{ error.password }}</span></label>
+        <input type="text" name="password" v-model="formData.password">
+        <label for="firstname">Prénom : <span v-if="error.firstname">{{ error.firstname }}</span></label>
+        <input type="text" name="firstname" v-model="formData.firstname">
+        <label for="lastname">Nom : <span v-if="error.lastname">{{ error.lastname }}</span></label>
+        <input type="text" name="lastname" v-model="formData.lastname">
+        <label for="service">Service : <span v-if="error.service">{{ error.service }}</span></label>
         <select name="service" v-model="formData.service">
             <option v-bind:key="index" v-for="(service, index) in formData.serviceList" >{{ service }}</option>
         </select>
@@ -17,17 +18,108 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'Signup',
     data(){
         return {
+            error: {
+                email: null,
+                password: null,
+                firstname: null,
+                lastname: null,
+                service: null,
+                global: null
+            },
             formData:{
                 service: '',
-                serviceList: ['Commercial', 'Marketting', 'Logistique', 'Ressource Humaine', 'Relation Client', ' Financier']
+                serviceList: ['Commercial', 'Marketing', 'Logistique', 'Ressource Humaine', 'Relation Client', ' Financier']
             }   
         }
-    }
-    
+    },
+    methods:{
+        signup(e){
+            e.preventDefault();
+            this.error.email = null;
+            this.error.password = null;
+            this.error.firstname = null;
+            this.error.lastname = null;
+            this.error.service = null;
+            this.error.global = null;
+            const vm = this;
+
+            if(!this.formData.email){
+                this.error.email = 'Vous devez entrer votre adresse mail !';
+            }
+
+            if(!this.formData.password){
+                this.error.password = 'Vous devez entrer votre mot de passe !';
+            }
+            
+            if(!this.formData.firstname){
+                this.error.firstname = 'Vous devez entrer votre prénom !';
+            }
+
+            if(!this.formData.lastname){
+                this.error.lastname = 'Vous devez entrer votre nom !';
+            }
+
+            if(!this.formData.service){
+                this.error.service = 'Vous devez sélectionner un service !';
+            }
+
+            if(!this.error.email && !this.error.password && !this.error.firstname && !this.error.lastname && !this.error.service){
+                let email = this.formData.email;
+                let password = this.formData.password;
+
+                axios({
+                        url: 'http://localhost:3000/api/auth/signup',
+                        method: 'POST',
+                        headers: { 
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        data: JSON.stringify({
+                            email: this.formData.email,
+                            password: this.formData.password,
+                            firstname: this.formData.firstname,
+                            lastname: this.formData.lastname,
+                            service: this.formData.service
+                        })                    
+                    })
+                    .then(function(res){
+                        console.log(res.data);
+                        //On log directement le nouvel utilisateur
+                        axios({
+                                url: 'http://localhost:3000/api/auth/login',
+                                method: 'POST',
+                                headers: { 
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                data: JSON.stringify({
+                                    email: email,
+                                    password: password
+                                })                    
+                            })
+                            .then(function(res){
+                                sessionStorage.setItem('userAuth', JSON.stringify(res.data));
+                                document.location.href = './';
+                            })
+                            .catch(function(error){
+                                console.log(error);
+                            });
+                        
+                    })
+                    .catch(function(error){
+                        let errormessage = error.response.data.error;
+                        console.log(errormessage);
+                        vm.error.global = errormessage;
+                    });
+            }
+        }
+    }    
 }
 </script>
 
