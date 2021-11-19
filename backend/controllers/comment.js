@@ -1,18 +1,30 @@
+const { Sequelize } = require('sequelize');
+const Op = Sequelize.Op;
 const config = require('../config/config');
 const sequelize = require('../config/sequelize');
 const { QueryTypes } = require('../config/sequelize');
+
 const Comment = require('../models/Comment');
 const CommentModerate = require('../models/CommentModerate');
+const User = require('../models/User');
 
 
 exports.getAllComment = (req, res, next) => {
-    sequelize.query('SELECT * FROM comments WHERE id_post = :id_post AND id_comment NOT IN (SELECT id_comment FROM comments_moderate) ORDER BY createdAt ASC',
-        { 
-            replacements: { id_post : req.params.id_post },
-            type: QueryTypes.SELECT
-        })
-        .then(comments => res.status(200).json(comments))
-        .catch(error => res.status(400).json({error}));
+    Comment.findAll({
+        where: {
+            id_post : req.params.id_post,
+            id_comment:{
+                [Op.notIn] : sequelize.literal(`(SELECT id_comment FROM comments_moderate)`)
+            }
+        },
+        include: [{
+            model : User,
+            attributes: ['firstname', 'lastname', 'service', 'avatar']
+        }],
+        order: [['createdAt' , 'ASC']]
+    })
+    .then(comments => res.status(200).json(comments))
+    .catch(error => res.status(400).json({error}));
 };
 
 exports.createComment = (req, res, next) => {
