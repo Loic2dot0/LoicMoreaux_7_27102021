@@ -2,8 +2,8 @@
     <section>
         <article v-bind:key="index" v-for="(post, index) in posts">
             <div class="article__header">
-                <img v-if="post.User.avatar" v-bind:src="post.User.avatar" v-on:click="modify" class="article__avatar" alt="avatar de l'utilisateur">
-                <img v-else src="../../assets/images/avatar.jpg" v-on:click="modify" class="article__avatar" alt="avatar de l'utilisateur">
+                <img v-if="post.User.avatar" v-bind:src="post.User.avatar" class="article__avatar" alt="avatar de l'utilisateur">
+                <img v-else src="../../assets/images/avatar.jpg" class="article__avatar" alt="avatar de l'utilisateur">
                 <div class="article__text">
                     <p>{{ post.User.firstname }} {{ post.User.lastname }} <i>{{ post.User.service }}</i></p>
                     <p class="article__date">{{ formatDate(post.createdAt, post.updatedAt) }}</p>
@@ -11,15 +11,16 @@
             </div>
             <h2 class="article__title">{{ post.title }}</h2>
             
-            <div class="article__img">
-                <img v-bind:src="post.image_url" v-bind:alt="post.title"> 
-            </div>
-
+            <router-link v-bind:to="`/post/${post.id_post}`">
+                <div class="article__img">
+                    <img v-bind:src="post.image_url" v-bind:alt="post.title"> 
+                </div>
+            </router-link>
             <div class="article__footer">
                 <button class="btn-rate btn-rate--top">Top</button>
                 <button class="btn-rate btn-rate--flop">Flop</button>
                 <button class="btn-comment">Commenter</button>
-            </div>
+            </div>  
         </article>
     </section>
 </template>
