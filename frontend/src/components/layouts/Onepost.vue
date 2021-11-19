@@ -22,7 +22,7 @@
             </div>  
         </article>
 
-        <router-link v-bind:to="`/`">Retour au feed</router-link>
+        <router-link v-bind:to="`/`" class="btn_return">Retour au feed</router-link>
 
         <allcomments v-bind:id_post="id_post"></allcomments>
     </section>
@@ -75,5 +75,23 @@ export default {
 </script>
 
 <style scoped>
-    
+    .btn_return{
+        display: block;
+        width: 50%;
+        margin: auto;
+        padding: 5px 10px;
+        text-align: center;
+        background-color: #fff;
+        color: #000;
+        font-size: 1.2rem;
+        border-radius: 5px;
+    }
+
+    .btn_return:hover{
+        background-color: #000;
+        outline: solid 1px #fff;
+        color: #fff;
+        text-decoration: none;
+        transition: 400ms;
+    }
 </style>
