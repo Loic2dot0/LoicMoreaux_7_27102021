@@ -8,7 +8,6 @@ const PostLike = require('../models/PostLike');
 const PostDislike = require('../models/PostDislike');
 const PostModerate = require('../models/PostModerate');
 const User = require('../models/User');
-const Comment = require('../models/Comment');
 
 
 exports.getAllPost = (req, res, next) => { //Retourne un tableau des posts dans l'ordre décroissant des dates de publication
@@ -33,7 +32,10 @@ exports.getOnePost = (req, res, next) => {
             where: {
                 id_post: req.params.id_post
             },
-            include: [{model: User},{model: Comment}]
+            include: [{
+                model: User,
+                attributes: ['firstname', 'lastname', 'service', 'avatar']
+            }]
         })
         .then(post => res.status(200).json(post))
         .catch(error => res.status(400).json({error}));
