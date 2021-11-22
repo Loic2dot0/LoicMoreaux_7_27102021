@@ -5,6 +5,7 @@
             <h2>Modifier mon profil</h2>
 
             <form v-on:submit="modifyProfile">
+                <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp" ref="file" v-on:change="upload()">
                 <span class="success" v-if="message">{{ message }}</span>
                 <span class="error" v-if="error.global">{{ error.global }}</span>
                 <label for="firstname">Prénom : <span class="error" v-if="error.firstname">{{ error.firstname }}</span></label>
@@ -43,7 +44,7 @@ export default {
                 firstname: null,
                 lastname: null,
                 service: null,
-                avatar: null,
+                file: null
             },
             serviceList: ['Commercial', 'Marketing', 'Logistique', 'Ressource Humaine', 'Relation Client', ' Financier'],
             error: {
@@ -87,19 +88,21 @@ export default {
             }else this.validText(this.formData.lastname, 'lastname');
             
             if(!this.error.firstname && !this.error.lastname){
+                let data = new FormData();
+                data.append('avatar', this.formData.file);
+                data.append('firstname', this.formData.firstname);
+                data.append('lastname', this.formData.lastname);
+                data.append('service', this.formData.service);
+
                 axios({
                         url: `http://localhost:3000/api/auth/profile/${userId}`,
                         method: 'PUT',
                         headers: { 
                             'Accept': 'application/json',
-                            'Content-Type': 'application/json',
+                            'Content-Type': 'multipart/form-data',
                             'authorization' : `Bearer ${token}`
                         },
-                        data: JSON.stringify({
-                            firstname: this.formData.firstname,
-                            lastname: this.formData.lastname,
-                            service: this.formData.service
-                        })                    
+                        data: data                                          
                     })
                     .then(function(res){
                         vm.message = res.data.message;                      
@@ -121,6 +124,9 @@ export default {
                 this.error[input] = 'Champ invalide !';
                 return false;
             }
+        },
+        upload(){
+            this.formData.file = this.$refs.file.files[0];
         }
     },
     created(){
