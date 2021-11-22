@@ -117,7 +117,7 @@ export default {
     }
 
     span{
-        color: #fd2d01;
+        color: #f1aeb5;
         text-align:center;   
     }
 </style>
