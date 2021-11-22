@@ -112,7 +112,7 @@ exports.modifyUser = (req, res, next) => {
         User.findByPk(req.params.id_user) 
             .then(user => {
                 if(user.avatar){
-                    const filename = user.avatar.split('/images/')[1];
+                    const filename = user.avatar.split('/images/avatars/')[1];
                     fs.unlink(`images/avatars/${filename}`, () => {console.log('Fichier image supprimé')});
                 }
             })
