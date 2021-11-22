@@ -2,13 +2,29 @@
     <form v-on:submit="signup">
         <span v-if="error.global">{{ error.global }}</span>
         <label for="email">E-mail : <span v-if="error.email">{{ error.email }}</span></label>
-        <input type="email" name="email" v-model="formData.email" v-on:keyup="validEmail(formData.email)" v-bind:class="{valid: valid.email}">
+        <input type="email" name="email"
+            v-model="formData.email"
+            v-on:keyup="validEmail(formData.email)"
+            v-bind:class="{valid: valid.email}"
+        >
         <label for="password">Mot de passe : <span v-if="error.password">{{ error.password }}</span></label>
-        <input type="password" name="password" v-model="formData.password" v-on:keyup="validPassword(formData.password)" v-bind:class="{valid: valid.password}">
+        <input type="password" name="password"
+            v-model="formData.password"
+            v-on:keyup="validPassword(formData.password)"
+            v-bind:class="{valid: valid.password}"
+        >
         <label for="firstname">Prénom : <span v-if="error.firstname">{{ error.firstname }}</span></label>
-        <input type="text" name="firstname" v-model="formData.firstname" v-on:keyup="validText(formData.firstname, 'firstname')" v-bind:class="{valid: valid.firstname}">
+        <input type="text" name="firstname"
+            v-model="formData.firstname"
+            v-on:keyup="validText(formData.firstname, 'firstname')"
+            v-bind:class="{valid: valid.firstname}"
+        >
         <label for="lastname">Nom : <span v-if="error.lastname">{{ error.lastname }}</span></label>
-        <input type="text" name="lastname" v-model="formData.lastname" v-on:keyup="validText(formData.lastname, 'lastname')" v-bind:class="{valid: valid.lastname}">
+        <input type="text" name="lastname"
+            v-model="formData.lastname"
+            v-on:keyup="validText(formData.lastname, 'lastname')"
+            v-bind:class="{valid: valid.lastname}"
+        >
         <label for="service">Service : <span v-if="error.service">{{ error.service }}</span></label>
         <select name="service" v-model="formData.service">
             <option v-bind:key="index" v-for="(service, index) in formData.serviceList" >{{ service }}</option>
@@ -176,11 +192,10 @@ export default {
                 return true;
             }else{
                 this.valid[input] = false;
-                this.error[input] = 'Champs invalide !';
+                this.error[input] = 'Champ invalide !';
                 return false;
             }
-        },
-
+        }
     }    
 }
 </script>
@@ -209,7 +224,7 @@ export default {
         cursor: pointer;
     }
 
-    .btnSubmit:hover{
+    .btnSubmit:hover:not(:disabled){
         background-color: #000;
         color: #ffd7d7 ;
         transition: 400ms;
@@ -217,11 +232,6 @@ export default {
 
     .btnSubmit:disabled{
         cursor: not-allowed;
-        color: #aaa;
-    }
-
-    .btnSubmit:disabled:hover{
-        background-color: #ffd7d7;   
     }
 
     span{

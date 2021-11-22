@@ -101,7 +101,7 @@ export default {
         cursor: pointer;
     }
 
-    .btnSubmit:hover{
+    .btnSubmit:hover:not(:disabled){
         background-color: #000;
         color: #ffd7d7 ;
         transition: 400ms;
@@ -109,11 +109,6 @@ export default {
 
     .btnSubmit:disabled{
         cursor: not-allowed;
-        color: #aaa;
-    }
-
-    .btnSubmit:disabled:hover{
-        background-color: #ffd7d7;   
     }
 
     span{
