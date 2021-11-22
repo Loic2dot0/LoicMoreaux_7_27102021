@@ -7,15 +7,23 @@
             <form v-on:submit="modifyProfile">
                 <span class="success" v-if="message">{{ message }}</span>
                 <span class="error" v-if="error.global">{{ error.global }}</span>
-                <label for="firstname">Prénom : </label>
-                <input type="text" name="firstname" v-model="formData.firstname">
-                <label for="lastname">Nom : </label>
-                <input type="text" name="lastname" v-model="formData.lastname">
+                <label for="firstname">Prénom : <span class="error" v-if="error.firstname">{{ error.firstname }}</span></label>
+                <input type="text" name="firstname"
+                    v-model="formData.firstname"
+                    v-on:keyup="validText(formData.firstname, 'firstname')"
+                    v-bind:class="{valid: valid.firstname}"
+                >
+                <label for="lastname">Nom : <span class="error" v-if="error.lastname">{{ error.lastname }}</span></label>
+                <input type="text" name="lastname"
+                    v-model="formData.lastname"
+                    v-on:keyup="validText(formData.lastname, 'lastname')"
+                    v-bind:class="{valid: valid.lastname}"
+                >
                 <label for="service">Service : </label>
                 <select name="service" v-model="formData.service">
                     <option v-bind:key="index" v-for="(service, index) in serviceList" >{{ service }}</option>
                 </select>
-                <input type="submit" value="Modifier mon compte" class="btnSubmit">
+                <input type="submit" value="Modifier mon compte" class="btnSubmit" v-bind:disabled=btnDisabled>
             </form>
         </section>
     </div>
@@ -39,12 +47,25 @@ export default {
             },
             serviceList: ['Commercial', 'Marketing', 'Logistique', 'Ressource Humaine', 'Relation Client', ' Financier'],
             error: {
-                global: null
+                global: null,
+                firstname: null,
+                lastname: null
+            },
+            valid:{
+                firstname: true,
+                lastname: true
             }
         }
     },
     components: {
         'profile': Profile
+    },
+    computed: {
+        btnDisabled(){
+            if(this.valid.firstname && this.valid.lastname && this.formData.service != ''){
+                return false;
+            }else return true;
+        }
     },
     methods:{
         modifyProfile(e){
@@ -54,28 +75,52 @@ export default {
             const vm = this;
             this.message = null;
             this.error.global = null;
+            this.error.firstname = null;
+            this.error.lastname = null;
 
-            axios({
-                    url: `http://localhost:3000/api/auth/profile/${userId}`,
-                    method: 'PUT',
-                    headers: { 
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'authorization' : `Bearer ${token}`
-                    },
-                    data: JSON.stringify({
-                        firstname: this.formData.firstname,
-                        lastname: this.formData.lastname,
-                        service: this.formData.service
-                    })                    
-                })
-                .then(function(res){
-                    vm.message = res.data.message;                      
-                })
-                .catch(function(error){
-                    let errormessage = error.response.data.error;
-                    vm.error.global = errormessage;
-                });
+            if(!this.formData.firstname){
+                this.error.firstname = 'Vous devez entrer votre prénom !';
+            }else this.validText(this.formData.firstname, 'firstname');
+
+            if(!this.formData.lastname){
+                this.error.lastname = 'Vous devez entrer votre nom !';
+            }else this.validText(this.formData.lastname, 'lastname');
+            
+            if(!this.error.firstname && !this.error.lastname){
+                axios({
+                        url: `http://localhost:3000/api/auth/profile/${userId}`,
+                        method: 'PUT',
+                        headers: { 
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'authorization' : `Bearer ${token}`
+                        },
+                        data: JSON.stringify({
+                            firstname: this.formData.firstname,
+                            lastname: this.formData.lastname,
+                            service: this.formData.service
+                        })                    
+                    })
+                    .then(function(res){
+                        vm.message = res.data.message;                      
+                    })
+                    .catch(function(error){
+                        let errormessage = error.response.data.error;
+                        vm.error.global = errormessage;
+                    });
+            }
+        },
+        validText(text, input){
+            const regexText = new RegExp(/^[a-zA-Z\s'\-àáâãäæçèéêëìíîïñòóôõöùúûüýÿœÀÁÂÃÄÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÜŒ]+$/g);
+            if(text.match(regexText) && text[0] != ' ' && text[text.length-1] != ' '){
+                this.valid[input] = true;
+                this.error[input] = null;
+                return true;
+            }else{
+                this.valid[input] = false;
+                this.error[input] = 'Champ invalide !';
+                return false;
+            }
         }
     },
     created(){
@@ -142,9 +187,13 @@ export default {
         cursor: pointer;
     }
 
-    .btnSubmit:hover{
+    .btnSubmit:hover:not(:disabled){
         background-color: #a3cfbb;
         transition: 400ms;
+    }
+
+    .btnSubmit:disabled{
+        cursor: not-allowed;
     }
     
     .success{
@@ -153,6 +202,10 @@ export default {
 
     .error{
         color: #f1aeb5;
+    }
+
+    .valid{
+        background-color: #a3cfbb;
     }
 
     @media screen and (min-width: 1024px) {
