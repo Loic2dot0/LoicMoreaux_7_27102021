@@ -5,7 +5,7 @@
         <input type="email" name="email" id="email" v-model="formData.email" required >
         <label for="password">Mot de passe : <span v-if="error.password">{{ error.password }}</span></label>
         <input type="password" name="password" id="password" v-model="formData.password" required> 
-        <input type="submit" value="Se connecter" class="btnSubmit">
+        <input type="submit" value="Se connecter" class="btnSubmit" v-bind:disabled=btnDisabled>
     </form>
 </template>
 
@@ -25,6 +25,13 @@ export default {
                 email: null,
                 password: null
             }
+        }
+    },
+    computed: {
+        btnDisabled(){
+            if(this.formData.email && this.formData.password){
+                return false;
+            }else return true;
         }
     },
     methods:{
@@ -98,6 +105,15 @@ export default {
         background-color: #000;
         color: #ffd7d7 ;
         transition: 400ms;
+    }
+
+    .btnSubmit:disabled{
+        cursor: not-allowed;
+        color: #aaa;
+    }
+
+    .btnSubmit:disabled:hover{
+        background-color: #ffd7d7;   
     }
 
     span{
