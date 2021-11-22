@@ -67,7 +67,7 @@ export default {
 <style>
     section{
         width: 95%;
-        margin-top: 20px
+        margin-top: 20px;
     }
 
     article{

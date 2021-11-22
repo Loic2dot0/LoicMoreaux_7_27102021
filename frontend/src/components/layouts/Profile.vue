@@ -34,7 +34,7 @@ export default {
             document.location.href = '/login';
         },
         modify: function(){
-            return true;
+            document.location.href = '/profile';
         }
     },
     created(){
