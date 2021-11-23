@@ -1,6 +1,7 @@
 <template>
     <section>
         <article v-bind:key="index" v-for="(post, index) in posts">
+            <router-link v-bind:to="`/post/modify/${post.id_post}`" v-if="post.User.id_user == userId" class="btn-modify">Éditer</router-link>
             <div class="author">
                 <img v-if="post.User.avatar" v-bind:src="post.User.avatar" class="author__avatar" alt="avatar de l'utilisateur">
                 <img v-else src="../../assets/images/avatar.jpg" class="author__avatar" alt="avatar de l'utilisateur">
@@ -33,7 +34,8 @@ export default {
     name: 'Feed',
     data(){
         return{
-            posts: []
+            posts: [],
+            userId: null
         }
     },
     methods:{
@@ -49,6 +51,7 @@ export default {
     },
     created(){
         const token = JSON.parse(sessionStorage.userAuth).token;
+        this.userId = JSON.parse(sessionStorage.userAuth).userId;
 
         axios.get(`${config.urlApi}/api/posts`,{
                 headers:{'authorization' : `Bearer ${token}`}
@@ -76,6 +79,7 @@ export default {
         background-color: #333;
         margin-bottom: 15px;
         padding: 5px;
+        position: relative;
     }
 
     .author{
@@ -155,10 +159,22 @@ export default {
         transition: 400ms;
     }
 
-    .btn-comment:hover{
+    .btn-comment:hover, .btn-modify:hover{
         background-color: #000;
         color: #fff;
         transition: 400ms;
+        text-decoration: none;
+    }
+    
+    .btn-modify{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #fff;
+        color: #000;
+        font-style: italic;   
     }
 
     @media screen and (min-width: 1024px) {
@@ -175,6 +191,10 @@ export default {
             width: 30%;
             line-height: 25px;
             font-size: 1.2rem;
+        }
+
+        .btn-modify{
+            padding: 5px 30px;
         }
     }
 </style>
