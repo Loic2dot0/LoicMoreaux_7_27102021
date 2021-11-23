@@ -1,12 +1,12 @@
 <template>
     <aside>
-        <button class="btn-publish">Publier</button>
-        <img v-if="user.avatar" v-bind:src="user.avatar" v-on:click="modify" class="avatar" alt="avatar de l'utilisateur">
-        <img v-else src="../../assets/images/avatar.jpg" v-on:click="modify" class="avatar" alt="avatar de l'utilisateur">
+        <button class="btn-publish" v-on:click="create">Publier</button>
+        <img v-if="user.avatar" v-bind:src="user.avatar" v-on:click="modify" class="avatar" alt="avatar de l'utilisateur" title="Modifier mon profil">
+        <img v-else src="../../assets/images/avatar.jpg" v-on:click="modify" class="avatar" alt="avatar de l'utilisateur" title="Modifier mon profil">
         <p>
             {{ user.firstname }}<br>
             {{ user.lastname }}<br>
-            {{ user.service }}
+            <i>{{ user.service }}</i>
         </p>
         <button v-on:click="modify" class="btn-profile">Mon profil</button>
         <button v-on:click="unlog" class="btn-unlog"><img src="../../assets/images/power-off-solid.svg" alt=""><span>Se déconnecter</span></button>
@@ -15,6 +15,7 @@
 
 <script>
 import axios from 'axios';
+import config from '../../utils/config';
 
 export default {
     name: 'Profile',
@@ -35,13 +36,16 @@ export default {
         },
         modify: function(){
             document.location.href = '/profile';
+        },
+        create: function(){
+            document.location.href = '/post/create';
         }
     },
     created(){
         const userId = JSON.parse(sessionStorage.userAuth).userId;
         const token = JSON.parse(sessionStorage.userAuth).token;
 
-        axios.get(`http://localhost:3000/api/auth/profile/${userId}`,{
+        axios.get(`${config.urlApi}/api/auth/profile/${userId}`,{
                 headers:{'authorization' : `Bearer ${token}`}
             })
             .then(res =>{
