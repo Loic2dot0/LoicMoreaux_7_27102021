@@ -1,6 +1,6 @@
 <template>
     <div v-if="session">
-        <profile></profile>
+        <profile v-bind:key="reload"></profile>
         <section>
             <h2>Modifier mon profil</h2>
 
@@ -40,6 +40,7 @@ export default {
         return{
             session: false,
             message: null,
+            reload: 0,
             formData: {
                 firstname: null,
                 lastname: null,
@@ -105,7 +106,8 @@ export default {
                         data: data                                          
                     })
                     .then(function(res){
-                        vm.message = res.data.message;                      
+                        vm.message = res.data.message;   
+                        vm.reload += 1                   
                     })
                     .catch(function(error){
                         let errormessage = error.response.data.error;
