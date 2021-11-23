@@ -11,7 +11,7 @@
             </div>
             <h2 class="article__title">{{ post.title }}</h2>
             
-            <router-link v-bind:to="`/post/${post.id_post}`">
+            <router-link v-bind:to="`/post/view/${post.id_post}`">
                 <div class="article__img">
                     <img v-bind:src="post.image_url" v-bind:alt="post.title"> 
                 </div>
@@ -27,6 +27,7 @@
 
 <script>
 import axios from 'axios';
+import config from '../../utils/config';
 
 export default {
     name: 'Feed',
@@ -49,7 +50,7 @@ export default {
     created(){
         const token = JSON.parse(sessionStorage.userAuth).token;
 
-        axios.get(`http://localhost:3000/api/posts`,{
+        axios.get(`${config.urlApi}/api/posts`,{
                 headers:{'authorization' : `Bearer ${token}`}
             })
             .then(res =>{
@@ -105,7 +106,8 @@ export default {
     }
 
     .article__title{
-        margin: 0; 
+        margin: 0;
+        font-weight: normal; 
     }
 
     .article__img{

@@ -11,6 +11,7 @@
 
 <script>
 import axios from 'axios';
+import config from '../../utils/config';
 
 export default {
     name: 'Login',
@@ -52,7 +53,7 @@ export default {
 
             if(!this.error.email && !this.error.password){
                 axios({
-                        url: 'http://localhost:3000/api/auth/login',
+                        url: `${config.urlApi}/api/auth/login`,
                         method: 'POST',
                         headers: { 
                             'Accept': 'application/json',

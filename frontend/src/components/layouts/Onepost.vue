@@ -31,6 +31,7 @@
 <script>
 import axios from 'axios';
 import Allcomments from './Allcomments.vue';
+import config from '../../utils/config'
 
 export default {
     name: 'Onepost',
@@ -58,7 +59,7 @@ export default {
     created(){
         const token = JSON.parse(sessionStorage.userAuth).token;
 
-        axios.get(`http://localhost:3000/api/posts/${this.id_post}`,{
+        axios.get(`${config.urlApi}/api/posts/${this.id_post}`,{
                 headers:{'authorization' : `Bearer ${token}`}
             })
             .then(res =>{

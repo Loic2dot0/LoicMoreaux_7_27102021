@@ -20,6 +20,7 @@
 
 <script>
 import axios from 'axios';
+import config from '../../utils/config';
 
 export default {
     name: 'Allcomments',
@@ -43,7 +44,7 @@ export default {
     created(){
         const token = JSON.parse(sessionStorage.userAuth).token;
 
-        axios.get(`http://localhost:3000/api/comments/post/${this.id_post}`,{
+        axios.get(`${config.urlApi}/api/comments/post/${this.id_post}`,{
                 headers:{'authorization' : `Bearer ${token}`}
             })
             .then(res =>{

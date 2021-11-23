@@ -35,6 +35,7 @@
 
 <script>
 import axios from 'axios';
+import config from '../../utils/config';
 
 export default {
     name: 'Signup',
@@ -107,7 +108,7 @@ export default {
                 let password = this.formData.password;
 
                 axios({
-                        url: 'http://localhost:3000/api/auth/signup',
+                        url: `${config.urlApi}/api/auth/signup`,
                         method: 'POST',
                         headers: { 
                             'Accept': 'application/json',
@@ -125,7 +126,7 @@ export default {
                         console.log(res.data);
                         //On log directement le nouvel utilisateur
                         axios({
-                                url: 'http://localhost:3000/api/auth/login',
+                                url: `${config.urlApi}/api/auth/login`,
                                 method: 'POST',
                                 headers: { 
                                     'Accept': 'application/json',

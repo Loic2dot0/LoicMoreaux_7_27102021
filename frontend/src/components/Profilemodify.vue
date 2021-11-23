@@ -41,6 +41,7 @@
 import axios from 'axios';
 import Profile from './layouts/Profile.vue';
 import ModalDelete from './layouts/Modaldelete.vue';
+import config from '../utils/config';
 
 export default {
     name: 'ProfileModify',
@@ -106,7 +107,7 @@ export default {
                 data.append('service', this.formData.service);
 
                 axios({
-                        url: `http://localhost:3000/api/auth/profile/${userId}`,
+                        url: `${config.urlApi}/api/auth/profile/${userId}`,
                         method: 'PUT',
                         headers: { 
                             'Accept': 'application/json',
@@ -149,7 +150,7 @@ export default {
         const userId = JSON.parse(sessionStorage.userAuth).userId;
         const token = JSON.parse(sessionStorage.userAuth).token;
 
-        axios.get(`http://localhost:3000/api/auth/profile/${userId}`,{
+        axios.get(`${config.urlApi}/api/auth/profile/${userId}`,{
                 headers:{'authorization' : `Bearer ${token}`}
             })
             .then(res =>{

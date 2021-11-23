@@ -17,6 +17,7 @@
 
 <script>
 import axios from 'axios';
+import config from '../../utils/config';
 
 export default {
     name: 'ModalDelete',
@@ -33,7 +34,7 @@ export default {
             const userId = JSON.parse(sessionStorage.userAuth).userId;
             const token = JSON.parse(sessionStorage.userAuth).token;
 
-            axios.delete(`http://localhost:3000/api/auth/profile/${userId}`,{
+            axios.delete(`${config.urlApi}/api/auth/profile/${userId}`,{
                 headers:{'authorization' : `Bearer ${token}`}
             })
             .then(res =>{
