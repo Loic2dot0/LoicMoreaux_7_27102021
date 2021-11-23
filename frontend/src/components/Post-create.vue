@@ -104,7 +104,10 @@ export default {
                         data: data                                          
                     })
                     .then(function(res){
-                        vm.message = res.data.message;                   
+                        vm.message = res.data.message;
+                        vm.formData.title = null;
+                        vm.formData.file = null;  
+                        vm.valid.title = false;                
                     })
                     .catch(function(error){
                         let errormessage = error.response.data.error;
@@ -135,7 +138,50 @@ export default {
     }
 
     h2{
-        margin: 0;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    form{
+        display: flex;
+        flex-direction: column;
+        line-height: 40px;
+        font-size: 1.2rem;
+    }
+
+    input{
+        height: 30px;
+        font-size: 1.2rem;
+        margin-bottom: 10px;    
+    }
+
+    .btnSubmit{
+        margin-top: 20px;
+        height: 40px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btnSubmit:hover:not(:disabled){
+        background-color: #a3cfbb;
+        transition: 400ms;
+    }
+
+    .btnSubmit:disabled{
+        cursor: not-allowed;
+    }
+
+    .success{
+        color: #a3cfbb;
+    }
+
+    .error{
+        color: #f1aeb5;
+    }
+
+    .valid{
+        background-color: #a3cfbb;
     }
     
     @media screen and (min-width: 1024px) {
