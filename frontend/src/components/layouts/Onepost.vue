@@ -95,4 +95,8 @@ export default {
         text-decoration: none;
         transition: 400ms;
     }
+
+    .article__img img{
+        max-height: none;
+    }
 </style>

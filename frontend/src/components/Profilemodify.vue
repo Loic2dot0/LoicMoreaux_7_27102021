@@ -6,8 +6,8 @@
                 <h2>Modifier mon profil</h2>
 
                 <form v-on:submit="modifyProfile">
-                    <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp" ref="file" v-on:change="upload()">
                     <span class="success" v-if="message">{{ message }}</span>
+                    <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp" ref="file" v-on:change="upload()">
                     <span class="error" v-if="error.global">{{ error.global }}</span>
                     <label for="firstname">Prénom : <span class="error" v-if="error.firstname">{{ error.firstname }}</span></label>
                     <input type="text" name="firstname"
