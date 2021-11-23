@@ -1,38 +1,46 @@
 <template>
-    <div v-if="session">
+    <div v-if="session" class="div-global">
         <profile v-bind:key="reload"></profile>
         <section>
-            <h2>Modifier mon profil</h2>
+            <div>
+                <h2>Modifier mon profil</h2>
 
-            <form v-on:submit="modifyProfile">
-                <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp" ref="file" v-on:change="upload()">
-                <span class="success" v-if="message">{{ message }}</span>
-                <span class="error" v-if="error.global">{{ error.global }}</span>
-                <label for="firstname">Prénom : <span class="error" v-if="error.firstname">{{ error.firstname }}</span></label>
-                <input type="text" name="firstname"
-                    v-model="formData.firstname"
-                    v-on:keyup="validText(formData.firstname, 'firstname')"
-                    v-bind:class="{valid: valid.firstname}"
-                >
-                <label for="lastname">Nom : <span class="error" v-if="error.lastname">{{ error.lastname }}</span></label>
-                <input type="text" name="lastname"
-                    v-model="formData.lastname"
-                    v-on:keyup="validText(formData.lastname, 'lastname')"
-                    v-bind:class="{valid: valid.lastname}"
-                >
-                <label for="service">Service : </label>
-                <select name="service" v-model="formData.service">
-                    <option v-bind:key="index" v-for="(service, index) in serviceList" >{{ service }}</option>
-                </select>
-                <input type="submit" value="Modifier mon compte" class="btnSubmit" v-bind:disabled=btnDisabled>
-            </form>
+                <form v-on:submit="modifyProfile">
+                    <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp" ref="file" v-on:change="upload()">
+                    <span class="success" v-if="message">{{ message }}</span>
+                    <span class="error" v-if="error.global">{{ error.global }}</span>
+                    <label for="firstname">Prénom : <span class="error" v-if="error.firstname">{{ error.firstname }}</span></label>
+                    <input type="text" name="firstname"
+                        v-model="formData.firstname"
+                        v-on:keyup="validText(formData.firstname, 'firstname')"
+                        v-bind:class="{valid: valid.firstname}"
+                    >
+                    <label for="lastname">Nom : <span class="error" v-if="error.lastname">{{ error.lastname }}</span></label>
+                    <input type="text" name="lastname"
+                        v-model="formData.lastname"
+                        v-on:keyup="validText(formData.lastname, 'lastname')"
+                        v-bind:class="{valid: valid.lastname}"
+                    >
+                    <label for="service">Service : </label>
+                    <select name="service" v-model="formData.service">
+                        <option v-bind:key="index" v-for="(service, index) in serviceList" >{{ service }}</option>
+                    </select>
+                    <input type="submit" value="Modifier mon compte" class="btnSubmit" v-bind:disabled=btnDisabled>
+                </form>
+            </div>
+
+            <div class="div-delete">
+                <button v-on:click="modal=true" class="btn-delete">Supprimer mon compte</button>
+            </div>
         </section>
+        <modaldelete v-if="modal" v-on:close="modal=false"></modaldelete>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
 import Profile from './layouts/Profile.vue';
+import ModalDelete from './layouts/Modaldelete.vue';
 
 export default {
     name: 'ProfileModify',
@@ -41,6 +49,7 @@ export default {
             session: false,
             message: null,
             reload: 0,
+            modal: false,
             formData: {
                 firstname: null,
                 lastname: null,
@@ -60,7 +69,8 @@ export default {
         }
     },
     components: {
-        'profile': Profile
+        'profile': Profile,
+        'modaldelete': ModalDelete
     },
     computed: {
         btnDisabled(){
@@ -155,7 +165,7 @@ export default {
 </script>
 
 <style scoped>
-    div{
+    .div-global{
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -163,10 +173,19 @@ export default {
 
     section{
         width: 95%;
-        margin-top: 20px;
-        padding: 5px;
-        background-color: #333;
+        margin-top: 20px;   
+    }
 
+    section div{
+        background-color: #333;
+        padding: 5px;
+         
+    }
+
+    .div-delete{
+        margin-top: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
 
     h2{
@@ -203,6 +222,21 @@ export default {
     .btnSubmit:disabled{
         cursor: not-allowed;
     }
+
+    .btn-delete{
+        width: 100%;
+        height: 40px;
+        background-color: #f1aeb5;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 5px;
+    }
+
+    .btn-delete:hover {
+        color: #fff;
+        background-color: #842029;
+        transition: 400ms;
+    }
     
     .success{
         color: #a3cfbb;
@@ -217,7 +251,7 @@ export default {
     }
 
     @media screen and (min-width: 1024px) {
-        div{
+        .div-global{
             display: flex;
             flex-direction: row;
             justify-content: space-around;
