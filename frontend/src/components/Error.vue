@@ -24,7 +24,9 @@ export default {
         background-color: #333;
         padding: 50px;
         font-size: 1.2rem;
+        margin:auto;
     }
+    
     h2{
         color: #fd2d01;
         font-size: 5rem;

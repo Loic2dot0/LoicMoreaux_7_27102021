@@ -43,6 +43,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    font-family: Helvetica, Arial, sans-serif;
   }
 
   main{
