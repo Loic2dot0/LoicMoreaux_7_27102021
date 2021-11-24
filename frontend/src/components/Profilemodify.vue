@@ -118,7 +118,7 @@ export default {
                     })
                     .then(function(res){
                         vm.message = res.data.message;   
-                        vm.reload += 1                   
+                        vm.reload += 1;                   
                     })
                     .catch(function(error){
                         let errormessage = error.response.data.error;
