@@ -1,6 +1,10 @@
 <template>
     <section>
         <article>
+            <div class="option" v-if="post.User.id_user == userId">
+                <router-link v-bind:to="`/post/modify/${post.id_post}`" class="btn-modify">Éditer</router-link>
+                <button class="btn-delpost" v-on:click="deletePost(post.id_post)">Supprimer</button>
+            </div>
             <div class="author">
                 <img v-if="user.avatar" v-bind:src="user.avatar" class="author__avatar" alt="avatar de l'utilisateur">
                 <img v-else src="../../assets/images/avatar.jpg" class="author__avatar" alt="avatar de l'utilisateur">
@@ -38,6 +42,7 @@ export default {
     data(){
         return{
             id_post: this.$route.params.id_post,
+            userId: null,
             post: {},
             user: {}
         }
@@ -51,6 +56,22 @@ export default {
             if(createdDate == updatedate){
                 return `Publié le ${date}`;
             }else return `Modifié le ${date}`;
+        },
+        deletePost(id_post){
+            const token = JSON.parse(sessionStorage.userAuth).token;
+            
+            axios.delete(`${config.urlApi}/api/posts/${id_post}`,{
+                headers:{'authorization' : `Bearer ${token}`}
+            })
+            .then(res =>{
+                console.log(res.data);
+                document.location.href = `/`;
+            })
+            .catch(error=> {
+                if(error.response.status > 400){
+                    document.location.href = `/error/${error.response.status}`;
+                }
+            });
         }
     },
     components: {
@@ -58,6 +79,7 @@ export default {
     },
     created(){
         const token = JSON.parse(sessionStorage.userAuth).token;
+        this.userId = JSON.parse(sessionStorage.userAuth).userId;
 
         axios.get(`${config.urlApi}/api/posts/${this.id_post}`,{
                 headers:{'authorization' : `Bearer ${token}`}
