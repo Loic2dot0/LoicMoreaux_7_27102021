@@ -4,7 +4,8 @@
         <section>
             <h2>Créer une publication</h2>
 
-            <form v-on:submit="createPost">
+            <p class="success" v-if="message">{{ message }}<br>Vous allez être redirigé automatiquement vers le fil d'actualité.</p>
+            <form v-on:submit="createPost" v-else>
                 <span class="success" v-if="message">{{ message }}</span>
                 <span class="error" v-if="error.global">{{ error.global }}</span>
                 <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp, image/gif" ref="file" v-on:change="upload()">
@@ -107,7 +108,10 @@ export default {
                         vm.message = res.data.message;
                         vm.formData.title = null;
                         vm.formData.file = null;  
-                        vm.valid.title = false;                
+                        vm.valid.title = false;
+                        setTimeout(()=>{
+                            document.location.href = `/`;
+                        }, 2000)                
                     })
                     .catch(function(error){
                         let errormessage = error.response.data.error;
@@ -174,6 +178,7 @@ export default {
 
     .success{
         color: #a3cfbb;
+        font-size: 1.2rem;
     }
 
     .error{
