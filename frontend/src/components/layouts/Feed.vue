@@ -1,7 +1,10 @@
-<template>
-    <section>
+<template v-bind:key="reload">
+    <section >
         <article v-bind:key="index" v-for="(post, index) in posts">
-            <router-link v-bind:to="`/post/modify/${post.id_post}`" v-if="post.User.id_user == userId" class="btn-modify">Éditer</router-link>
+            <div class="option" v-if="post.User.id_user == userId">
+                <router-link v-bind:to="`/post/modify/${post.id_post}`" class="btn-modify">Éditer</router-link>
+                <button class="btn-delpost" v-on:click="deletePost(post.id_post)">Supprimer</button>
+            </div>
             <div class="author">
                 <img v-if="post.User.avatar" v-bind:src="post.User.avatar" class="author__avatar" alt="avatar de l'utilisateur">
                 <img v-else src="../../assets/images/avatar.jpg" class="author__avatar" alt="avatar de l'utilisateur">
@@ -35,7 +38,7 @@ export default {
     data(){
         return{
             posts: [],
-            userId: null
+            userId: null,
         }
     },
     methods:{
@@ -47,6 +50,23 @@ export default {
             if(createdDate == updatedate){
                 return `Publié le ${date}`;
             }else return `Modifié le ${date}`;
+        },
+        deletePost(id_post){
+            const token = JSON.parse(sessionStorage.userAuth).token;
+            const vm = this;
+
+            axios.delete(`${config.urlApi}/api/posts/${id_post}`,{
+                headers:{'authorization' : `Bearer ${token}`}
+            })
+            .then(res =>{
+                console.log(res.data);
+                vm.$emit('reload');
+            })
+            .catch(error=> {
+                if(error.response.status > 400){
+                    document.location.href = `/error/${error.response.status}`;
+                }
+            });
         }
     },
     created(){
@@ -79,7 +99,11 @@ export default {
         background-color: #333;
         margin-bottom: 15px;
         padding: 5px;
-        position: relative;
+    }
+
+    .option{
+        display: flex;
+        justify-content: flex-end;
     }
 
     .author{
@@ -166,15 +190,25 @@ export default {
         text-decoration: none;
     }
     
-    .btn-modify{
-        position: absolute;
-        top: 5px;
-        right: 5px;
+    .btn-modify, .btn-delpost{
         padding: 5px;
         border-radius: 5px;
         background-color: #fff;
         color: #000;
         font-style: italic;   
+    }
+
+    .btn-delpost{
+        border: none;
+        margin-left: 5px;
+        font-size: 1rem;
+        background-color: #f1aeb5;
+    }
+    
+    .btn-delpost:hover{
+        color: #fff;
+        background-color: #842029;
+        transition: 400ms;
     }
 
     @media screen and (min-width: 1024px) {
@@ -193,8 +227,9 @@ export default {
             font-size: 1.2rem;
         }
 
-        .btn-modify{
-            padding: 5px 30px;
+        .btn-modify, .btn-delpost{
+            width: 15%;
+            text-align: center;
         }
     }
 </style>

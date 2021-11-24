@@ -1,7 +1,7 @@
 <template>
     <div v-if="session">
         <profile></profile> 
-        <feed></feed>
+        <feed v-bind:key="reload" v-on:reload="reload++"></feed>
     </div>
 </template>
 
@@ -13,7 +13,8 @@ export default {
     name: 'Main-view',
     data(){
         return{
-            session: false
+            session: false,
+            reload: 0
         }
     },
     methods:{
