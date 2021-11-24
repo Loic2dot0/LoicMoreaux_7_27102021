@@ -19,7 +19,7 @@ exports.getAllPost = (req, res, next) => { //Retourne un tableau des posts dans 
             },
             include: [{
                 model : User,
-                attributes: ['firstname', 'lastname', 'service', 'avatar']
+                attributes: ['id_user', 'firstname', 'lastname', 'service', 'avatar']
             }],
             order: [['createdAt' , 'DESC']]
         })
@@ -34,7 +34,7 @@ exports.getOnePost = (req, res, next) => {
             },
             include: [{
                 model: User,
-                attributes: ['firstname', 'lastname', 'service', 'avatar']
+                attributes: ['id_user', 'firstname', 'lastname', 'service', 'avatar']
             }]
         })
         .then(post => res.status(200).json(post))
