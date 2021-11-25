@@ -20,11 +20,7 @@
                     <img v-bind:src="post.image_url" v-bind:alt="post.title"> 
                 </div>
             </router-link>
-            <div class="article__footer">
-                <button class="btn-rate btn-rate--top">Top</button>
-                <button class="btn-rate btn-rate--flop">Flop</button>
-                <button class="btn-comment">Commenter</button>
-            </div>  
+            <reaction v-bind:id_post="post.id_post" ></reaction>   
         </article>
     </section>
 </template>
@@ -32,6 +28,7 @@
 <script>
 import axios from 'axios';
 import config from '../../utils/config';
+import Reaction from '../layouts/Reaction.vue';
 
 export default {
     name: 'Feed',
@@ -58,16 +55,16 @@ export default {
             axios.delete(`${config.urlApi}/api/posts/${id_post}`,{
                 headers:{'authorization' : `Bearer ${token}`}
             })
-            .then(res =>{
-                console.log(res.data);
-                vm.$emit('reload');
-            })
+            .then(()=> vm.$emit('reload'))
             .catch(error=> {
                 if(error.response.status > 400){
                     document.location.href = `/error/${error.response.status}`;
                 }
             });
         }
+    },
+    components: {
+        'reaction' : Reaction      
     },
     created(){
         const token = JSON.parse(sessionStorage.userAuth).token;
@@ -148,47 +145,6 @@ export default {
         max-height: 350px;
         margin: auto;
     }
-
-    .article__footer{
-        display: flex;
-        justify-content: space-between;
-        margin-top: 5px;
-    }
-
-    .article__footer button{
-        line-height: 20px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 5px;
-        width: 32%;
-    }
-
-    .btn-rate--top{
-        background-color: #a3ebc5;
-    }
-
-    .btn-rate--top:hover{
-        background-color: #16d198;
-        color: #fff;
-        transition: 400ms;
-    }
-
-    .btn-rate--flop{
-        background-color: #ef6262;
-    }
-
-    .btn-rate--flop:hover{
-        background-color: #ef4558;
-        color: #fff;
-        transition: 400ms;
-    }
-
-    .btn-comment:hover, .btn-modify:hover{
-        background-color: #000;
-        color: #fff;
-        transition: 400ms;
-        text-decoration: none;
-    }
     
     .btn-modify, .btn-delpost{
         padding: 5px;
@@ -196,6 +152,13 @@ export default {
         background-color: #fff;
         color: #000;
         font-style: italic;   
+    }
+
+    .btn-modify:hover{
+        background-color: #000;
+        color: #fff;
+        transition: 400ms;
+        text-decoration: none;
     }
 
     .btn-delpost{
@@ -219,12 +182,6 @@ export default {
         
         .author__text{
             font-size: 1.4rem;
-        }
-
-        .article__footer button{
-            width: 30%;
-            line-height: 25px;
-            font-size: 1.2rem;
         }
 
         .btn-modify, .btn-delpost{
