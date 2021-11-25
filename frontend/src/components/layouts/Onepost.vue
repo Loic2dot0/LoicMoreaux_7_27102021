@@ -1,7 +1,7 @@
 <template>
     <section>
         <article>
-            <div class="option" v-if="post.User.id_user == userId">
+            <div class="option" v-if="user.id_user == userId">
                 <router-link v-bind:to="`/post/modify/${post.id_post}`" class="btn-modify">Éditer</router-link>
                 <button class="btn-delpost" v-on:click="deletePost(post.id_post)">Supprimer</button>
             </div>
@@ -19,11 +19,7 @@
                 <img v-bind:src="post.image_url" v-bind:alt="post.title"> 
             </div>
             
-            <div class="article__footer">
-                <button class="btn-rate btn-rate--top">Top</button>
-                <button class="btn-rate btn-rate--flop">Flop</button>
-                <button class="btn-comment">Commenter</button>
-            </div>  
+            <reaction v-bind:id_post="id_post" ></reaction>  
         </article>
 
         <router-link v-bind:to="`/`" class="btn_return">Retour au feed</router-link>
@@ -35,7 +31,8 @@
 <script>
 import axios from 'axios';
 import Allcomments from './Allcomments.vue';
-import config from '../../utils/config'
+import config from '../../utils/config';
+import Reaction from '../layouts/Reaction.vue';
 
 export default {
     name: 'Onepost',
@@ -63,10 +60,7 @@ export default {
             axios.delete(`${config.urlApi}/api/posts/${id_post}`,{
                 headers:{'authorization' : `Bearer ${token}`}
             })
-            .then(res =>{
-                console.log(res.data);
-                document.location.href = `/`;
-            })
+            .then(()=>{document.location.href = `/`;})
             .catch(error=> {
                 if(error.response.status > 400){
                     document.location.href = `/error/${error.response.status}`;
@@ -75,7 +69,8 @@ export default {
         }
     },
     components: {
-        'allcomments' : Allcomments      
+        'allcomments' : Allcomments,
+        'reaction' : Reaction      
     },
     created(){
         const token = JSON.parse(sessionStorage.userAuth).token;
