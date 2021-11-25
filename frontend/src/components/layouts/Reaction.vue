@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="article__footer">
+        <div class="reaction">
             <button class="btn-rate btn-rate--top"
                 v-bind:class="{topactive: userlike}"
                 v-bind:disabled=userdislike
@@ -173,6 +173,30 @@ export default {
 </script>
 
 <style scoped>
+    .reaction{
+        
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 5px;
+    }
+
+    .reaction button{
+        line-height: 25px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;   
+    }
+
+    .btn-rate{
+        width: 45%;
+    }
+    
+    .btn-comment{
+        margin-top: 10px;
+        width: 100%;
+    }
+    
     .btn-rate--top{
         background-color: #000;
         color: #a3ebc5;
@@ -206,7 +230,20 @@ export default {
         background-color: #ef6262;
         color: #000;
     }
+
     button:disabled{
         cursor: not-allowed;
+    }
+
+    @media screen and (min-width: 1024px) {
+        .reaction{
+            height: 30px;
+        }
+
+        .btn-rate, .btn-comment{
+            width: 30%;
+            font-size: 1.2rem;
+            margin-top: 0px
+        }
     }
 </style>
