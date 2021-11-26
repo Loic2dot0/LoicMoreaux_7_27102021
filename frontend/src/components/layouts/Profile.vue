@@ -80,6 +80,10 @@ export default {
         border-radius: 5px;
     }
 
+    p{
+        overflow-wrap: break-word;
+    }
+
     p, .btn-profile, .btn-unlog span{
        display: none;
     }

@@ -120,6 +120,7 @@ export default {
         margin-left: 5px;
         flex: 1;
         font-size: 1.2rem;
+        overflow-wrap: break-word;
     }
 
     .author__text p{
@@ -132,7 +133,8 @@ export default {
 
     .article__title{
         margin: 0;
-        font-weight: normal; 
+        font-weight: normal;
+        overflow-wrap: break-word; 
     }
 
     .article__img{
