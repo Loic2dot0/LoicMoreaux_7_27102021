@@ -59,7 +59,7 @@ export default {
     methods:{
         validText(text){
             this.count = text.length;
-            if(text[0] != ' ' && text.length <= 140){
+            if(text != '' && text[0] != ' ' && text.length <= 140){
                 this.valid.title = true;
                 this.error.title = null;
                 return true;
@@ -82,7 +82,7 @@ export default {
             this.error.global = null;
             this.error.title = null;
            
-            if(!this.formData.title){
+            if(!this.formData.title || this.formData.title == ''){
                 this.error.title = 'Vous devez entrer un titre !';
             }else this.validText(this.formData.title);
 
