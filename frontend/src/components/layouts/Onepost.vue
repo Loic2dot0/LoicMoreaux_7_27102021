@@ -23,14 +23,11 @@
         </article>
 
         <router-link v-bind:to="`/`" class="btn_return">Retour au feed</router-link>
-
-        <allcomments v-bind:id_post="id_post"></allcomments>
     </section>
 </template>
 
 <script>
 import axios from 'axios';
-import Allcomments from './Allcomments.vue';
 import config from '../../utils/config';
 import Reaction from '../layouts/Reaction.vue';
 
@@ -69,7 +66,6 @@ export default {
         }
     },
     components: {
-        'allcomments' : Allcomments,
         'reaction' : Reaction      
     },
     created(){

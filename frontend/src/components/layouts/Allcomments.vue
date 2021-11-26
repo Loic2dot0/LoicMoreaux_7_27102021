@@ -64,6 +64,7 @@ export default {
         background-color: #333;
         font-size: 1.4rem;
         padding: 5px;
+        margin: 10px 0;
     }
     
     .comments_div{

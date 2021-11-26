@@ -31,12 +31,14 @@
             ></textarea>
             <input type="submit" value="Envoyer" class="btn-submit" v-bind:disabled=btnDisabled>
         </form>
+        <allcomments v-if="toggle || postcom" v-bind:id_post="id_post" v-bind:key="comment"></allcomments>
     </div> 
 </template>
 
 <script>
 import axios from 'axios';
 import config from '../../utils/config';
+import Allcomments from './Allcomments.vue';
 
 export default {
     name: 'Reaction',
@@ -66,6 +68,9 @@ export default {
         }
     },
     props: ['id_post', 'postcom'],
+    components: {
+        'allcomments' : Allcomments     
+    },
     methods:{
         reactLike(){
             let reaction = 0;
@@ -152,7 +157,7 @@ export default {
                         vm.formData.comment = null;
                         vm.formData.valid = false;
                         vm.formData.count = 0;
-                        vm.$emit('reload');                                      
+                        vm.comment++;                                     
                     })
                     .catch(function(error){
                         let errormessage = error.response.data.error;
