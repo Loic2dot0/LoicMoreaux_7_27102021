@@ -9,7 +9,7 @@
                 <span class="success" v-if="message">{{ message }}</span>
                 <span class="error" v-if="error.global">{{ error.global }}</span>
                 <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp, image/gif" ref="file" v-on:change="upload()">
-                <label for="title">Titre : <span class="error" v-if="error.title">{{ error.title }}</span></label>
+                <label for="title">Titre <i>( {{ count }}/140 )</i> : <span class="error" v-if="error.title">{{ error.title }}</span></label>
                 <input type="text" name="title" maxlength="140"
                     v-model="formData.title"
                     v-on:keyup="validText(formData.title)"
@@ -42,7 +42,8 @@ export default {
             },
             valid:{
                 title: false
-            }
+            },
+            count: 0
         }
     },
     computed: {
@@ -57,14 +58,15 @@ export default {
     },
     methods:{
         validText(text){
-            const regexText = new RegExp(/^[0-9a-zA-Z\s'"?!.\-àáâãäæçèéêëìíîïñòóôõöùúûüýÿœÀÁÂÃÄÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÜŒ]+$/g);
-            if(text.match(regexText) && text[0] != ' ' && text[text.length-1] != ' '){
+            this.count = text.length;
+            if(text[0] != ' ' && text.length <= 140){
                 this.valid.title = true;
                 this.error.title = null;
                 return true;
             }else{
                 this.valid.title = false;
-                this.error.title = 'Champ invalide !';
+                if(text.length > 140){this.error.title = 'Longueur du champ dépassée !';}
+                else this.error.title = 'Champ invalide !';
                 return false;
             }
         },

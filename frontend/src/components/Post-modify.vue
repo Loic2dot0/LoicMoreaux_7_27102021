@@ -8,7 +8,7 @@
             <form v-on:submit="modifyPost" v-else>
                 
                 <span class="error" v-if="error.global">{{ error.global }}</span>
-                <label for="title">Titre : <span class="error" v-if="error.title">{{ error.title }}</span></label>
+                <label for="title">Titre <i>( {{ count }}/140 )</i> : <span class="error" v-if="error.title">{{ error.title }}</span></label>
                 <input type="text" name="title" maxlength="140"
                     v-model="formData.title"
                     v-on:keyup="validText(formData.title)"
@@ -41,7 +41,8 @@ export default {
             },
             valid:{
                 title: true
-            }
+            },
+            count: 0
         }
     },
     computed: {
@@ -56,14 +57,15 @@ export default {
     },
     methods:{
         validText(text){
-            const regexText = new RegExp(/^[0-9a-zA-Z\s'"?!.\-àáâãäæçèéêëìíîïñòóôõöùúûüýÿœÀÁÂÃÄÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÜŒ]+$/g);
-            if(text.match(regexText) && text[0] != ' ' && text[text.length-1] != ' '){
+            this.count = text.length;
+            if(text[0] != ' ' && text.length <= 140){
                 this.valid.title = true;
                 this.error.title = null;
                 return true;
             }else{
                 this.valid.title = false;
-                this.error.title = 'Champ invalide !';
+                if(text.length > 140){this.error.title = 'Longueur du champ dépassée !';}
+                else this.error.title = 'Champ invalide !';
                 return false;
             }
         },
@@ -114,12 +116,13 @@ export default {
         }else this.session = true;
         console.log(this.id_post);
         const token = JSON.parse(sessionStorage.userAuth).token;
-
+        
         axios.get(`${config.urlApi}/api/posts/${this.id_post}`,{
                 headers:{'authorization' : `Bearer ${token}`}
             })
             .then(res =>{
                this.formData.title = res.data.title;
+               this.count = res.data.title.length;
             })
             .catch(error=> {
                if(error.response.status > 400){
