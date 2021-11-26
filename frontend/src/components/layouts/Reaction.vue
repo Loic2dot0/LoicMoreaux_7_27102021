@@ -31,7 +31,7 @@
             ></textarea>
             <input type="submit" value="Envoyer" class="btn-submit" v-bind:disabled=btnDisabled>
         </form>
-        <allcomments v-if="toggle || postcom" v-bind:id_post="id_post" v-bind:key="comment"></allcomments>
+        <allcomments v-if="toggle || postcom" v-bind:id_post="id_post" v-bind:key="comment" v-on:reload="comment--"></allcomments>
     </div> 
 </template>
 
