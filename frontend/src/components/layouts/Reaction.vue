@@ -21,10 +21,15 @@
                 <span v-else>Commentaires {{ comment }}</span>
             </button>
         </div>
-        <form v-if="toggle" v-on:submit="sendComment">
-            <label for="comment">Publier un commentaire :</label>
-            <input name="comment" type="text">
-            <input type="submit">
+        <form class="postcom" v-if="toggle || postcom" v-on:submit="createComment">
+            <span class="success" v-if="formData.message">{{ formData.message }}</span>
+            <span class="error" v-if="formData.error">{{ formData.error }}</span>
+            <label for="comment">Publier un commentaire <i>( {{ formData.count }}/500 )</i> :</label>
+            <textarea name="comment" type="text" maxlength="500"
+                v-model="formData.comment"
+                v-on:keyup="validText(formData.comment)"
+            ></textarea>
+            <input type="submit" value="Envoyer" class="btn-submit" v-bind:disabled=btnDisabled>
         </form>
     </div> 
 </template>
@@ -44,9 +49,23 @@ export default {
             comment: 0,
             userId: null,
             toggle: false,
+            formData:{
+                comment: null,
+                error: null,
+                valid: false,
+                message: null,
+                count: 0
+            }
         }
     },
-    props: ['id_post'],
+    computed: {
+        btnDisabled(){
+            if(this.formData.valid){
+                return false;
+            }else return true;
+        }
+    },
+    props: ['id_post', 'postcom'],
     methods:{
         reactLike(){
             let reaction = 0;
@@ -89,8 +108,57 @@ export default {
                 }
             });
         },
-        sendComment(){
-            console.log('sending')
+        validText(text){
+            this.formData.count = text.length;
+            if(text!= '' && text[0] != ' ' && text.length <= 500){
+                this.formData.valid = true;
+                this.formData.error = null;
+                return true;
+            }else{
+                this.formData.valid = false;
+                if(text.length > 500){this.formData.error = 'Longueur du champ dépassée !';}
+                else this.formData.error = 'Champ invalide !';
+                return false;
+            }
+        },
+        createComment(e){
+            e.preventDefault();
+            const userId = JSON.parse(sessionStorage.userAuth).userId;
+            const token = JSON.parse(sessionStorage.userAuth).token;
+            const vm = this;
+            this.formData.message = null;
+            this.formData.error = null;
+
+            if(!this.formData.comment){
+                this.formData.error = "Vous n'avez pas entré de commentaires !";
+            }else this.validText(this.formData.comment);
+
+            if(!this.formData.error){
+                axios({
+                        url: `${config.urlApi}/api/comments/post/${this.id_post}`,
+                        method: 'POST',
+                        headers: { 
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'authorization' : `Bearer ${token}`
+                        },
+                        data: JSON.stringify({
+                            id_user: userId,
+                            comment: this.formData.comment
+                        })                                                              
+                    })
+                    .then(function(res){
+                        vm.formData.message = res.data.message;
+                        vm.formData.comment = null;
+                        vm.formData.valid = false;
+                        vm.formData.count = 0;
+                        vm.$emit('reload');                                      
+                    })
+                    .catch(function(error){
+                        let errormessage = error.response.data.error;
+                        vm.formData.error = errormessage;
+                    });
+            }
         }
     },
     created(){
@@ -181,7 +249,7 @@ export default {
         margin-top: 5px;
     }
 
-    .reaction button{
+    .reaction button, .btn-submit{
         line-height: 25px;
         font-size: 1rem;
         border: none;
@@ -195,6 +263,12 @@ export default {
     .btn-comment{
         margin-top: 10px;
         width: 100%;
+    }
+
+    .btn-comment:hover, .btn-submit:hover:not(:disabled){
+        background-color: #000;
+        color: #fff;
+        transition: 400ms;
     }
     
     .btn-rate--top{
@@ -233,6 +307,37 @@ export default {
 
     button:disabled{
         cursor: not-allowed;
+    }
+
+    .postcom{
+        margin-top: 15px;
+        display: flex;
+        flex-direction: column
+    }
+
+    textarea{
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        resize: none;    
+    }
+
+    .btn-submit{
+        height: 30px;
+        cursor: pointer;
+    }
+
+    .btn-submit:disabled{
+        cursor: not-allowed;
+    }
+
+    .success{
+        color: #a3cfbb;
+        font-size: 1.1rem;
+    }
+
+    .error{
+        color: #f1aeb5;
     }
 
     @media screen and (min-width: 1024px) {

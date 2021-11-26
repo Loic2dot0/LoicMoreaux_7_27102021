@@ -19,7 +19,7 @@
                 <img v-bind:src="post.image_url" v-bind:alt="post.title"> 
             </div>
             
-            <reaction v-bind:id_post="id_post" ></reaction>  
+            <reaction v-bind:id_post="id_post" v-bind:postcom="true"></reaction>  
         </article>
 
         <router-link v-bind:to="`/`" class="btn_return">Retour au feed</router-link>
