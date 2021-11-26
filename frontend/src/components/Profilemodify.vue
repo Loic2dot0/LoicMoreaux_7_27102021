@@ -10,13 +10,13 @@
                     <input type="file" accept="image/png, image/jpeg, image/jpg, image/webp" ref="file" v-on:change="upload()">
                     <span class="error" v-if="error.global">{{ error.global }}</span>
                     <label for="firstname">Prénom : <span class="error" v-if="error.firstname">{{ error.firstname }}</span></label>
-                    <input type="text" name="firstname"
+                    <input type="text" name="firstname" maxlength="25"
                         v-model="formData.firstname"
                         v-on:keyup="validText(formData.firstname, 'firstname')"
                         v-bind:class="{valid: valid.firstname}"
                     >
                     <label for="lastname">Nom : <span class="error" v-if="error.lastname">{{ error.lastname }}</span></label>
-                    <input type="text" name="lastname"
+                    <input type="text" name="lastname" maxlength="25"
                         v-model="formData.lastname"
                         v-on:keyup="validText(formData.lastname, 'lastname')"
                         v-bind:class="{valid: valid.lastname}"
@@ -128,13 +128,14 @@ export default {
         },
         validText(text, input){
             const regexText = new RegExp(/^[a-zA-Z\s'\-àáâãäæçèéêëìíîïñòóôõöùúûüýÿœÀÁÂÃÄÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÜŒ]+$/g);
-            if(text.match(regexText) && text[0] != ' ' && text[text.length-1] != ' '){
+            if(text.match(regexText) && text[0] != ' ' && text.length <= 25){
                 this.valid[input] = true;
                 this.error[input] = null;
                 return true;
             }else{
                 this.valid[input] = false;
-                this.error[input] = 'Champ invalide !';
+                if(text.length > 25){this.error[input] = 'Longueur du champ dépassée !';}
+                else this.error[input] = 'Champ invalide !';
                 return false;
             }
         },

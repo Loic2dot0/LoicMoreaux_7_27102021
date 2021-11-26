@@ -14,13 +14,13 @@
             v-bind:class="{valid: valid.password}"
         >
         <label for="firstname">Prénom : <span v-if="error.firstname">{{ error.firstname }}</span></label>
-        <input type="text" name="firstname"
+        <input type="text" name="firstname" maxlength="25"
             v-model="formData.firstname"
             v-on:keyup="validText(formData.firstname, 'firstname')"
             v-bind:class="{valid: valid.firstname}"
         >
         <label for="lastname">Nom : <span v-if="error.lastname">{{ error.lastname }}</span></label>
-        <input type="text" name="lastname"
+        <input type="text" name="lastname" maxlength="25"
             v-model="formData.lastname"
             v-on:keyup="validText(formData.lastname, 'lastname')"
             v-bind:class="{valid: valid.lastname}"
@@ -122,8 +122,7 @@ export default {
                             service: this.formData.service
                         })                    
                     })
-                    .then(function(res){
-                        console.log(res.data);
+                    .then(function(){
                         //On log directement le nouvel utilisateur
                         axios({
                                 url: `${config.urlApi}/api/auth/login`,
@@ -187,13 +186,14 @@ export default {
         },
         validText(text, input){
             const regexText = new RegExp(/^[a-zA-Z\s'\-àáâãäæçèéêëìíîïñòóôõöùúûüýÿœÀÁÂÃÄÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÜŒ]+$/g);
-            if(text.match(regexText) && text[0] != ' ' && text[text.length-1] != ' '){
+            if(text.match(regexText) && text[0] != ' ' && text.length <= 25){
                 this.valid[input] = true;
                 this.error[input] = null;
                 return true;
             }else{
                 this.valid[input] = false;
-                this.error[input] = 'Champ invalide !';
+                if(text.length > 25){this.error[input] = 'Longueur du champ dépassée !';}
+                else this.error[input] = 'Champ invalide !';
                 return false;
             }
         }
