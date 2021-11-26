@@ -3,7 +3,7 @@
         <article v-bind:key="index" v-for="(post, index) in posts">
             <div class="option" v-if="post.User.id_user == userId">
                 <router-link v-bind:to="`/post/modify/${post.id_post}`" class="btn-modify">Éditer</router-link>
-                <button class="btn-delpost" v-on:click="deletePost(post.id_post)">Supprimer</button>
+                <button class="btn-delpost" v-on:click="modalDelete(post.id_post)">Supprimer</button>
             </div>
             <div class="author">
                 <img v-if="post.User.avatar" v-bind:src="post.User.avatar" class="author__avatar" alt="avatar de l'utilisateur">
@@ -20,8 +20,9 @@
                     <img v-bind:src="post.image_url" v-bind:alt="post.title"> 
                 </div>
             </router-link>
-            <reaction v-bind:id_post="post.id_post" ></reaction>   
+            <reaction v-bind:id_post="post.id_post" ></reaction>           
         </article>
+        <modaldelpost v-if="modal" v-on:delete="deletePost(deleteidpost)" v-on:close="modal=false"></modaldelpost>   
     </section>
 </template>
 
@@ -29,6 +30,7 @@
 import axios from 'axios';
 import config from '../../utils/config';
 import Reaction from '../layouts/Reaction.vue';
+import ModalDelPost from '../layouts/Modaldelpost.vue';
 
 export default {
     name: 'Feed',
@@ -36,6 +38,8 @@ export default {
         return{
             posts: [],
             userId: null,
+            modal:false,
+            deleteidpost: null
         }
     },
     methods:{
@@ -47,6 +51,10 @@ export default {
             if(createdDate == updatedate){
                 return `Publié le ${date}`;
             }else return `Modifié le ${date}`;
+        },
+        modalDelete(id_post){
+            this.deleteidpost = id_post;
+            this.modal = true;
         },
         deletePost(id_post){
             const token = JSON.parse(sessionStorage.userAuth).token;
@@ -64,7 +72,8 @@ export default {
         }
     },
     components: {
-        'reaction' : Reaction      
+        'reaction' : Reaction,
+        'modaldelpost' : ModalDelPost      
     },
     created(){
         const token = JSON.parse(sessionStorage.userAuth).token;

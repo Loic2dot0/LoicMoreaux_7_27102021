@@ -3,7 +3,7 @@
         <article>
             <div class="option" v-if="user.id_user == userId">
                 <router-link v-bind:to="`/post/modify/${post.id_post}`" class="btn-modify">Éditer</router-link>
-                <button class="btn-delpost" v-on:click="deletePost(post.id_post)">Supprimer</button>
+                <button class="btn-delpost" v-on:click="modal=true">Supprimer</button>
             </div>
             <div class="author">
                 <img v-if="user.avatar" v-bind:src="user.avatar" class="author__avatar" alt="avatar de l'utilisateur">
@@ -23,6 +23,7 @@
         </article>
 
         <router-link v-bind:to="`/`" class="btn_return">Retour au feed</router-link>
+        <modaldelpost v-if="modal" v-on:delete="deletePost(post.id_post)" v-on:close="modal=false"></modaldelpost>
     </section>
 </template>
 
@@ -30,6 +31,7 @@
 import axios from 'axios';
 import config from '../../utils/config';
 import Reaction from '../layouts/Reaction.vue';
+import ModalDelPost from '../layouts/Modaldelpost.vue';
 
 export default {
     name: 'Onepost',
@@ -38,7 +40,8 @@ export default {
             id_post: this.$route.params.id_post,
             userId: null,
             post: {},
-            user: {}
+            user: {},
+            modal: false
         }
     },
     methods:{
@@ -66,7 +69,8 @@ export default {
         }
     },
     components: {
-        'reaction' : Reaction      
+        'reaction' : Reaction,
+        'modaldelpost' : ModalDelPost      
     },
     created(){
         const token = JSON.parse(sessionStorage.userAuth).token;
