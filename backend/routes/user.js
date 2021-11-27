@@ -10,5 +10,6 @@ router.post('/login', userCtrl.login);
 router.get('/profile/:id_user', auth, userCtrl.getUser);
 router.put('/profile/:id_user', auth, multer.avatar, userCtrl.modifyUser);
 router.delete('/profile/:id_user', auth, userCtrl.deleteUser);
+router.get('/moderator/:id_user', userCtrl.getModerator);
 
 module.exports = router;

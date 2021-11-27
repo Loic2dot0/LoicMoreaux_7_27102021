@@ -4,6 +4,7 @@ const config = require('../config/config');
 const fs = require('fs');
 const User = require('../models/User');
 const UserLog = require('../models/UserLog');
+const Moderator = require('../models/Moderator');
 
 
 exports.signup = (req, res, next) => {
@@ -75,7 +76,7 @@ exports.login = (req, res, next) => {
                                             email: req.body.email
                                         }
                                     })
-                                    .then(()=> config.debug && console.log('suppresion de userlog'))
+                                    .then(()=> config.debug && console.log('suppression de userlog'))
                                     .catch((error)=> console.log(error));
                             }
                             res.status(200).json({
@@ -143,9 +144,24 @@ exports.modifyUser = (req, res, next) => {
 exports.deleteUser = (req, res, next) => {
     User.destroy({ 
             where: {
-            id_user: req.params.id_user
+                id_user: req.params.id_user
             }
         })
         .then(()=> res.status(200).json({message : 'Compte utilisateur supprimé !'}))
         .catch((error)=> res.status(500).json({error}));
+};
+
+exports.getModerator = (req, res, next) => {
+    Moderator.findOne({
+            where: {
+                id_user: req.params.id_user
+            }
+        })
+        .then(moderator => {
+            if(moderator){
+                res.status(200).json({moderator : true});
+            }
+            else res.status(200).json({moderator : false});
+        })
+        .catch(error => res.status(400).json({error}));
 };
