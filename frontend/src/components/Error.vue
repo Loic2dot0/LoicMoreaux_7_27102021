@@ -12,9 +12,6 @@ export default {
         return{
             errorStatus: this.$route.params.status
         }
-    },
-    created(){
-        console.log(this.$route.params.status);
     }
 }
 </script>

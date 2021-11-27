@@ -37,8 +37,7 @@ export default {
             axios.delete(`${config.urlApi}/api/auth/profile/${userId}`,{
                 headers:{'authorization' : `Bearer ${token}`}
             })
-            .then(res =>{
-                console.log(res.data);
+            .then(() =>{
                 sessionStorage.clear();
                 document.location.href = '/login';
             })
