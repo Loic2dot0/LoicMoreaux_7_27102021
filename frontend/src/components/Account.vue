@@ -23,11 +23,11 @@ export default {
         }
     },
     methods:{
-        toggleLogin: function(){
+        toggleLogin(){
             this.toggle1 = true,
             this.toggle2 = false
         },
-        toggleSignup: function(){
+        toggleSignup(){
             this.toggle1 = false,
             this.toggle2 = true
         }

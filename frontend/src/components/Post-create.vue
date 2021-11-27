@@ -96,15 +96,13 @@ export default {
                 data.append('title', this.formData.title);
                 data.append('id_user', userId);
                 
-                axios({
-                        url: `${config.urlApi}/api/posts`,
-                        method: 'POST',
+                axios.post(`${config.urlApi}/api/posts`, data,
+                    {                       
                         headers: { 
                             'Accept': 'application/json',
                             'Content-Type': 'multipart/form-data',
                             'authorization' : `Bearer ${token}`
-                        },
-                        data: data                                          
+                        }                                     
                     })
                     .then(function(res){
                         vm.message = res.data.message;
@@ -113,14 +111,13 @@ export default {
                         vm.valid.title = false;
                         setTimeout(()=>{
                             document.location.href = `/`;
-                        }, 2000)                
+                        }, 1000)                
                     })
                     .catch(function(error){
                         let errormessage = error.response.data.error;
                         vm.error.global = errormessage;
                     });
             }
-
         }
     },
     created(){

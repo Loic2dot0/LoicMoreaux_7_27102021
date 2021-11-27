@@ -100,7 +100,7 @@ export default {
                         vm.valid.title = false;
                         setTimeout(()=>{
                             document.location.href = `/`;
-                        }, 2000)
+                        }, 1000)
                                        
                     })
                     .catch(function(error){

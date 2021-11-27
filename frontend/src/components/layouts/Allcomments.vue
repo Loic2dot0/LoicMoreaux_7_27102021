@@ -19,7 +19,7 @@
                     <p class="author__date">{{ formatDate(comment.createdAt, comment.updatedAt) }}</p>
                 </div>
             </div> 
-           {{ comment.comment }}
+           <p>{{ comment.comment }}</p>
         </div>
     </div>
 </template>
@@ -119,6 +119,11 @@ export default {
 
     .comments_div:last-child{
         border: none;
+    }
+
+    .comments_div p{
+        margin: 0px;
+        overflow-wrap: break-word;
     }
 
     .option{

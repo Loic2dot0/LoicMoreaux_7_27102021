@@ -15,11 +15,6 @@
 <script>
 export default {
     name: 'ModalDelPost',
-    data(){
-        return{
-
-        }
-    },
     methods:{
         modalClose(){
             this.$emit('close');

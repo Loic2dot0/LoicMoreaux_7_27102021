@@ -19,9 +19,6 @@ export default {
             moderator: false,
         }
     },
-    methods:{
-        
-    },
     components: {
         'profile' : Profile,
         'onepost' : OnePost      

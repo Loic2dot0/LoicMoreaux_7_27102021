@@ -20,9 +20,6 @@ export default {
             reload: 0
         }
     },
-    methods:{
-        
-    },
     components: {
         'profile' : Profile,
         'feed' : Feed      
