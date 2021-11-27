@@ -1,14 +1,16 @@
 <template>
     <div class="comments" >
-        
         <h3>Commentaires</h3>
 
         <p v-if="comments.length == 0">Il n'y a aucun commentaire pour le moment.</p>
         <div v-else v-bind:key="index" v-for="(comment, index) in comments" class="comments_div">
-            <button class="btn-del" title="Supprimer mon commentaire"
-                v-if="comment.id_user == userId"
-                v-on:click="deleteComment(comment.id_comment)"
-            ><span class="btn-del--mini">X</span><span class="btn-del--big">Supprimer</span></button>
+            <div class="option">
+                <button class="btn-del" title="Supprimer mon commentaire"
+                    v-if="comment.id_user == userId"
+                    v-on:click="deleteComment(comment.id_comment)"
+                ><span class="btn-del--mini">X</span><span class="btn-del--big">Supprimer</span></button>
+                <button v-if="moderator" class="btn-del btn-del--ml" v-on:click="moderateComment(comment.id_comment)">Modérer</button>
+            </div>
             <div class="author">
                 <img v-if="comment.User.avatar" v-bind:src="comment.User.avatar" class="author__avatar" alt="avatar de l'utilisateur">
                 <img v-else src="../../assets/images/avatar.jpg" class="author__avatar" alt="avatar de l'utilisateur">
@@ -34,7 +36,7 @@ export default {
             userId: null
         }
     },
-    props: ['id_post'],
+    props: ['id_post', 'moderator'],
     methods:{
         formatDate(createdDate, updatedate){
             const dateISO = new Date(updatedate)
@@ -58,6 +60,26 @@ export default {
                     document.location.href = `/error/${error.response.status}`;
                 }
             });
+        },
+        moderateComment(id_comment){
+            const token = JSON.parse(sessionStorage.userAuth).token;
+            const vm = this;
+
+            axios.post(`${config.urlApi}/api/comments/${id_comment}/moderate`,
+                JSON.stringify({ moderate: true }),
+                {
+                    headers: { 
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'authorization' : `Bearer ${token}`
+                    }                     
+                })
+                .then(()=> vm.$emit('reload'))
+                .catch(error=> {
+                    if(error.response.status > 400){
+                        document.location.href = `/error/${error.response.status}`;
+                    }
+                });
         }
     },
     created(){
@@ -99,10 +121,13 @@ export default {
         border: none;
     }
 
-    .btn-del{
+    .option{
         position: absolute;
         top: 5px;
         right: 5px;
+    }
+
+    .btn-del{
         border:none;
         border-radius: 5px;
         background-color: #f1aeb5;
@@ -116,6 +141,10 @@ export default {
 
     .btn-del--big{
         display: none;
+    }
+
+    .btn-del--ml{
+        margin-left: 5px;
     }
 
     @media screen and (min-width: 1024px) {

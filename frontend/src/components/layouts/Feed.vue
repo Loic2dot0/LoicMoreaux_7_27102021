@@ -21,7 +21,7 @@
                     <img v-bind:src="post.image_url" v-bind:alt="post.title"> 
                 </div>
             </router-link>
-            <reaction v-bind:id_post="post.id_post" ></reaction>           
+            <reaction v-bind:id_post="post.id_post" v-bind:moderator="moderator"></reaction>           
         </article>
         <modaldelpost v-if="modal" v-on:delete="deletePost(deleteidpost)" v-on:close="modal=false"></modaldelpost>   
     </section>
@@ -76,25 +76,21 @@ export default {
             const token = JSON.parse(sessionStorage.userAuth).token;
             const vm = this;
 
-            axios.delete(`${config.urlApi}/api/posts/${id_post}/moderate`,{
-                headers:{'authorization' : `Bearer ${token}`}
-            })
-        
-        axios.post(`${config.urlApi}/api/posts/${id_post}/moderate`,
-            JSON.stringify({ moderate: true }),
-            {
-                headers: { 
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'authorization' : `Bearer ${token}`
-                }                     
-            })
-            .then(()=> vm.$emit('reload'))
-            .catch(error=> {
-                if(error.response.status > 400){
-                    document.location.href = `/error/${error.response.status}`;
-                }
-            });
+            axios.post(`${config.urlApi}/api/posts/${id_post}/moderate`,
+                JSON.stringify({ moderate: true }),
+                {
+                    headers: { 
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'authorization' : `Bearer ${token}`
+                    }                     
+                })
+                .then(()=> vm.$emit('reload'))
+                .catch(error=> {
+                    if(error.response.status > 400){
+                        document.location.href = `/error/${error.response.status}`;
+                    }
+                });
         }
     },
     components: {
