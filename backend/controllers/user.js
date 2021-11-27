@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
+const utils = require('../utils/utils');
 const fs = require('fs');
 const User = require('../models/User');
 const UserLog = require('../models/UserLog');
@@ -11,7 +12,7 @@ exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash =>{
             User.create({
-                    email: req.body.email,
+                    email: utils.hashmail(req.body.email),
                     password: hash,
                     firstname: req.body.firstname,
                     lastname: req.body.lastname,
@@ -25,7 +26,7 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
     UserLog.findOne({
             where: {
-                email: req.body.email
+                email: utils.hashmail(req.body.email)
             }
         })
         .then(userlog =>{
@@ -42,7 +43,7 @@ exports.login = (req, res, next) => {
 
             User.findOne({
                     where: {
-                        email: req.body.email
+                        email: utils.hashmail(req.body.email)
                     }
                 })
                 .then(user => {
@@ -53,7 +54,7 @@ exports.login = (req, res, next) => {
                         .then(valid => {
                             if(!valid){
                                 if(trycount == 0){
-                                    UserLog.create({ email: req.body.email})
+                                    UserLog.create({ email: utils.hashmail(req.body.email)})
                                         .then(()=>config.debug && console.log('creation dans userlog'))
                                         .catch((error)=> console.log(error));
                                         trycount++;
@@ -61,7 +62,7 @@ exports.login = (req, res, next) => {
                                     trycount++;
                                     UserLog.update({ try: trycount }, {
                                             where: {
-                                                email: req.body.email
+                                                email: utils.hashmail(req.body.email)
                                             }
                                         })
                                         .then(()=> config.debug && console.log('Modification dans userlog'))
@@ -73,7 +74,7 @@ exports.login = (req, res, next) => {
                             if(trycount != 0){
                                 UserLog.destroy({ 
                                         where: {
-                                            email: req.body.email
+                                            email: utils.hashmail(req.body.email)
                                         }
                                     })
                                     .then(()=> config.debug && console.log('suppression de userlog'))
