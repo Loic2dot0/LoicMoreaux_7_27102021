@@ -1,0 +1,1 @@
+Post images are stored in this folder.
