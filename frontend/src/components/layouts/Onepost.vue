@@ -1,9 +1,10 @@
 <template>
     <section>
         <article>
-            <div class="option" v-if="user.id_user == userId">
-                <router-link v-bind:to="`/post/modify/${post.id_post}`" class="btn-modify">Éditer</router-link>
-                <button class="btn-delpost" v-on:click="modal=true">Supprimer</button>
+            <div class="option" v-if="user.id_user == userId || moderator">
+                <router-link v-if="post.User.id_user == userId" v-bind:to="`/post/modify/${post.id_post}`" class="btn-modify">Éditer</router-link>
+                <button class="btn-delpost" v-if="post.User.id_user == userId" v-on:click="modal=true">Supprimer</button>
+                <button v-if="moderator" class="btn-delpost" v-on:click="moderatePost(post.id_post)">Modérer</button>
             </div>
             <div class="author">
                 <img v-if="user.avatar" v-bind:src="user.avatar" class="author__avatar" alt="avatar de l'utilisateur">
@@ -19,7 +20,7 @@
                 <img v-bind:src="post.image_url" v-bind:alt="post.title"> 
             </div>
             
-            <reaction v-bind:id_post="id_post" v-bind:postcom="true"></reaction>  
+            <reaction v-bind:id_post="id_post" v-bind:postcom="true" v-bind:moderator="moderator"></reaction>  
         </article>
 
         <router-link v-bind:to="`/`" class="btn_return">Retour au feed</router-link>
@@ -44,6 +45,7 @@ export default {
             modal: false
         }
     },
+    props: ['moderator'],
     methods:{
         formatDate(createdDate, updatedate){
             const dateISO = new Date(updatedate)
@@ -66,6 +68,25 @@ export default {
                     document.location.href = `/error/${error.response.status}`;
                 }
             });
+        },
+        moderatePost(id_post){
+            const token = JSON.parse(sessionStorage.userAuth).token;
+           
+            axios.post(`${config.urlApi}/api/posts/${id_post}/moderate`,
+                JSON.stringify({ moderate: true }),
+                {
+                    headers: { 
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'authorization' : `Bearer ${token}`
+                    }                     
+                })
+                .then(()=> document.location.href = `/`)
+                .catch(error=> {
+                    if(error.response.status > 400){
+                        document.location.href = `/error/${error.response.status}`;
+                    }
+                });
         }
     },
     components: {

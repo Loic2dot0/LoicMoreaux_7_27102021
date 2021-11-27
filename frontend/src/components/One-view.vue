@@ -1,11 +1,13 @@
 <template>
     <div v-if="session">
         <profile></profile> 
-        <onepost></onepost>
+        <onepost v-bind:moderator="moderator"></onepost>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+import config from '../utils/config';
 import Profile from './layouts/Profile.vue';
 import OnePost from './layouts/Onepost.vue';
 
@@ -13,7 +15,8 @@ export default {
     name: 'One-view',
     data(){
         return{
-            session: false
+            session: false,
+            moderator: false,
         }
     },
     methods:{
@@ -27,6 +30,22 @@ export default {
         if(!sessionStorage.userAuth){
             document.location.href = '/login';
         }else this.session = true;
+    
+        const token = JSON.parse(sessionStorage.userAuth).token;
+        const userId = JSON.parse(sessionStorage.userAuth).userId;
+        const vm = this;
+
+        axios.get(`${config.urlApi}/api/auth/moderator/${userId}`,{
+                headers:{'authorization' : `Bearer ${token}`}
+            })
+            .then(res =>{
+              vm.moderator = res.data.moderator;
+            })
+            .catch(error=> {
+               if(error.response.status > 400){
+                    document.location.href = `/error/${error.response.status}`;
+                }
+            });
     }
 }
 
