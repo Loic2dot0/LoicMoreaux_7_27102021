@@ -1,9 +1,10 @@
 <template v-bind:key="reload">
     <section >
         <article v-bind:key="index" v-for="(post, index) in posts">
-            <div class="option" v-if="post.User.id_user == userId">
-                <router-link v-bind:to="`/post/modify/${post.id_post}`" class="btn-modify">Éditer</router-link>
-                <button class="btn-delpost" v-on:click="modalDelete(post.id_post)">Supprimer</button>
+            <div class="option" v-if="post.User.id_user == userId || moderator">
+                <router-link v-if="post.User.id_user == userId" v-bind:to="`/post/modify/${post.id_post}`" class="btn-modify">Éditer</router-link>
+                <button v-if="post.User.id_user == userId" class="btn-delpost" v-on:click="modalDelete(post.id_post)">Supprimer</button>
+                <button v-if="moderator" class="btn-delpost" v-on:click="moderatePost(post.id_post)">Modérer</button>
             </div>
             <div class="author">
                 <img v-if="post.User.avatar" v-bind:src="post.User.avatar" class="author__avatar" alt="avatar de l'utilisateur">
@@ -42,6 +43,7 @@ export default {
             deleteidpost: null
         }
     },
+    props: ['moderator'],
     methods:{
         formatDate(createdDate, updatedate){
             const dateISO = new Date(updatedate)
@@ -62,6 +64,30 @@ export default {
 
             axios.delete(`${config.urlApi}/api/posts/${id_post}`,{
                 headers:{'authorization' : `Bearer ${token}`}
+            })
+            .then(()=> vm.$emit('reload'))
+            .catch(error=> {
+                if(error.response.status > 400){
+                    document.location.href = `/error/${error.response.status}`;
+                }
+            });
+        },
+        moderatePost(id_post){
+            const token = JSON.parse(sessionStorage.userAuth).token;
+            const vm = this;
+
+            axios.delete(`${config.urlApi}/api/posts/${id_post}/moderate`,{
+                headers:{'authorization' : `Bearer ${token}`}
+            })
+        
+        axios.post(`${config.urlApi}/api/posts/${id_post}/moderate`,
+            JSON.stringify({ moderate: true }),
+            {
+                headers: { 
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'authorization' : `Bearer ${token}`
+                }                     
             })
             .then(()=> vm.$emit('reload'))
             .catch(error=> {
