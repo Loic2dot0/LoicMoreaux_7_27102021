@@ -1,6 +1,9 @@
 <template v-bind:key="reload">
-    <section >
-        <article v-bind:key="index" v-for="(post, index) in posts">
+    <section>
+        <article v-if="posts.length == 0">
+            <p>Désolé il n'y a aucune publication pour le moment...</p>
+        </article>
+        <article v-else v-bind:key="index" v-for="(post, index) in posts">
             <div class="option" v-if="post.User.id_user == userId || moderator">
                 <router-link v-if="post.User.id_user == userId" v-bind:to="`/post/modify/${post.id_post}`" class="btn-modify">Éditer</router-link>
                 <button v-if="post.User.id_user == userId" class="btn-delpost" v-on:click="modalDelete(post.id_post)">Supprimer</button>
