@@ -1,7 +1,10 @@
 # GROUPOMANIA
 
 Student Project 7 (final project) for [OpenClassrooms](https://openclassrooms.com).  
-Create a corporate social network
+Create a corporate social network.
+
+Using Vue.js, Node.js, Express, Sequelize.
+
 ## Prerequisites
 
 You will need to have Node and `npm` installed locally on your machine.
