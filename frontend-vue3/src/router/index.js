@@ -30,6 +30,11 @@ const router = createRouter({
       component: () => import('../views/PostCreateView.vue')
     },
     {
+      path: '/post/modify/:id_post',
+      name: 'post-modify',
+      component: () => import('../views/PostModifyView.vue')
+    },
+    {
       path: '/error/:status',
       name: 'error',
       component: () => import('../views/ErrorView.vue')
