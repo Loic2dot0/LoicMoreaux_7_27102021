@@ -32,7 +32,7 @@ node server
 The server should run on `localhost` with default port `3000`.  
 Use `Ctrl+C` in the terminal to stop the local server.
 
-# Frontend
+# Frontend (Old Version)
 
 ## Setup
 From the folder `frontend`
@@ -45,6 +45,29 @@ npm run serve
 ```
 App running at:
 - Local: http://localhost:8080/  
+
+Create account and enjoy!!  
+To create a moderator account, add your user Id in the `moderators` table. 
+
+# Frontend-vue3
+A version with Vue3 (Options API) in Vite
+
+## Setup
+From the folder `frontend-vue3`
+```
+npm install
+```
+
+## Compile and Hot-Reload for Development
+```
+npm run dev
+```
+
+### Compile and Minify for Production
+
+```
+npm run build
+```
 
 Create account and enjoy!!  
 To create a moderator account, add your user Id in the `moderators` table. 
