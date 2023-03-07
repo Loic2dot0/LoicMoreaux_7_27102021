@@ -1,8 +1,8 @@
 <template>
     <section>
         <div class="div-btn">
-            <div class="btn" :class="{'btn--select': toggle }" @click="toggle = !toggle">Se connecter</div>
-            <div class="btn" :class="{'btn--select': !toggle }" @click="toggle = !toggle">Créer un compte</div>
+            <div class="btn" :class="{'btn--select': toggle }" @click="toggleAccount">Se connecter</div>
+            <div class="btn" :class="{'btn--select': !toggle }" @click="toggleAccount">Créer un compte</div>
         </div>
 
         <Login class="div-account" v-if="toggle"></Login>
@@ -26,7 +26,10 @@
         };
     },
     methods: {
-        
+        toggleAccount($event){
+            if($event.target.classList.contains('btn--select')) return;
+            this.toggle = !this.toggle;           
+        }
     }
 }
 </script>
